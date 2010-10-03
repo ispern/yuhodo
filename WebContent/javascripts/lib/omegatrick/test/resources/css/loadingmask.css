@@ -1,0 +1,102 @@
+/* vim: set expandtab tabstop=2 shiftwidth=2 softtabstop=2: */
+
+/**
+ * Omega Trick Library 0.5.0
+ * Copyright(c) 2006-2010 Xenophy.CO.,LTD All rights Reserved.
+ * http://omegatrick.com
+ * http://www.gnu.org/licenses/gpl-3.0.html
+ */
+
+/* ------------------------------
+ html/body
+------------------------------ */
+html, body {
+  margin:0;
+  padding:0;
+  border:0 none;
+  overflow:hidden;
+  height:100%;
+  width:100%;
+}
+
+/* ------------------------------
+ ローディングマスク
+------------------------------ */
+#OMEGATRICK_LOADINGMASK {
+  position: absolute;
+  left:     0;
+  top:      0;
+  width:    100%;
+  height:   100%;
+  z-index:  2000;
+  background-color: #fff;
+}
+
+/* ------------------------------
+ ロゴ
+------------------------------ */
+#OMEGATRICK_LOADING_LOGO {
+  z-index:  2001;
+  position: absolute;
+  top:      30px;
+  left:     30px;
+  height:   80px;
+  width:    272px;
+  background-image: url(../images/loading/logo.gif);
+  background-repeat: no-repeat;
+}
+
+/* ------------------------------
+ 処理状態
+------------------------------ */
+#OMEGATRICK_LOADING_PROGRESS {
+  z-index:      2001;
+  overflow:     auto;
+  height:       80px;
+  width:        86px;
+  position:     absolute;
+  top:          50%;
+  left:         50%;
+  margin-top:   -40px;
+  margin-left:  -43px;
+  text-align:   center;
+}
+
+#OMEGATRICK_LOADING_PROGRESS p {
+  padding-left:   27px;
+  padding-top:    1px;
+  height:         20px;
+  font-size:      12px;
+}
+
+#OMEGATRICK_LOADING_PROGRESS_MSG {
+  text-align: left;
+  color: #777777;
+  padding-left: 28px;
+  background-image: url(../images/loading-indicator.gif);
+  background-repeat: no-repeat;
+}
+
+#OMEGATRICK_LOADING_PROGRESS_MSG span {
+  height: 20px;
+  display: table-cell;
+  vertical-align: middle;
+}
+
+#OMEGATRICK_LOADING_PROGRESS_MSG span { /* IE 6 */
+  _display: inline;
+  _zoom: 1;
+}
+
+*:first-child+html #OMEGATRICK_LOADING_PROGRESS_MSG span {/* IE 7 */
+  display: inline;
+  zoom: 1;
+}
+
+/*
+ * Local variables:
+ * tab-width: 2
+ * c-basic-offset: 2
+ * c-hanging-comment-ender-p: nil
+ * End:
+ */

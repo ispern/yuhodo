@@ -1,0 +1,26 @@
+## Description
+
+
+## Getting Started
+
+
+
+## Directory composition
+
+<pre>
++--[Document Root]
+   |
+   +--[ext] Ext JS(please set it up by yourself.)
+   |
+   +--[ext-core] Ext Core(please set it up by yourself.)
+   |
+   +--[sencha-touch] Sencha Touch(please set it up by yourself.)
+   |
+   +--[yui] YUI Test(please set it up by yourself.)
+   |
+   +--[OmegaTrick] Omega Trick
+   |
+   .
+   .
+   .
+</pre>

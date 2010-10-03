@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset=utf-8 />
+
+    <title>xbuttons Plugin Sample - Omega Trick for Ext JS</title>
+
+    <!-- Ext includes -->
+    <link rel="stylesheet" type="text/css" href="../../../ext/resources/css/ext-all.css" />
+    <link rel="stylesheet" type="text/css" href="../shared/examples.css" />
+
+    <!-- Omega Trick includes -->
+    <link rel="stylesheet" type="text/css" href="../../resources/css/omegatrick-all.css" />
+
+    <!-- Ext includes -->
+    <script type="text/javascript" src="../../../ext/adapter/ext/ext-base-debug.js"></script>
+    <script type="text/javascript" src="../../../ext/ext-all-debug.js"></script>
+
+</head>
+<body>
+
+    <!-- Omega Trick includes -->
+    <script type="text/javascript" src="../../omegatrick-all-debug.js"></script>
+
+    <!-- Sample Core includes -->
+    <script type="text/javascript" src="xbuttons/Ok.js"></script>
+    <script type="text/javascript" src="xbuttons/Cancel.js"></script>
+    <script type="text/javascript" src="xbuttons.js"></script>
+
+    <h1>xbuttons Plugin Sample - Omega Trick for Ext JS</h1>
+
+    <h2>ptype:t.xbuttons</h2>
+
+    <p>参照：<a href="xbuttons/Ok.js">Ok.js</a>,<a href="xbuttons/Cancel.js">Cancel.js</a></p>
+
+    <p>Ext.Panel（またはその子クラス）にコンフィグオプション"<strong>xbuttons</strong>"を提供します。</p>
+    <p>buttonsで指定するExt.Buttonクラスのxtype名を配列で指定することができるとともに、プラグインを設定したパネルに"<strong>xbuttons</strong>"プロパティから、ボタンに指定した"<strong>xname</strong>"でアクセスできるようにします。</p>
+
+    <div id="renderarea"></div>
+
+    <pre class="code">
+var p = new Ext.Panel({
+    title: 'Panel with Trick.plugins.xbuttons',
+    padding: 20,
+    width: 300,
+    height: 150,
+    <strong>plugins: ['t.xbuttons']</strong>,
+    xbuttons: [
+        'ok',
+        'cancel'
+    ],
+    renderTo: Ext.get('renderarea')
+});
+
+<strong>p.xbuttons.ok</strong>.setText('[' + <strong>p.xbuttons.ok</strong>.getText() + ']');
+<strong>p.xbuttons.cancel</strong>.setText('[' + <strong>p.xbuttons.cancel</strong>.getText() + ']');
+</pre>
+</body>
+</html>

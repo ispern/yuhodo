@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset=utf-8 />
+
+    <title>xitems Plugin Sample - Omega Trick for Ext JS</title>
+
+    <!-- Ext includes -->
+    <link rel="stylesheet" type="text/css" href="../../../ext/resources/css/ext-all.css" />
+    <link rel="stylesheet" type="text/css" href="../shared/examples.css" />
+
+    <!-- Omega Trick includes -->
+    <link rel="stylesheet" type="text/css" href="../../resources/css/omegatrick-all.css" />
+
+    <!-- Ext includes -->
+    <script type="text/javascript" src="../../../ext/adapter/ext/ext-base-debug.js"></script>
+    <script type="text/javascript" src="../../../ext/ext-all-debug.js"></script>
+
+</head>
+<body>
+
+    <!-- Omega Trick includes -->
+    <script type="text/javascript" src="../../omegatrick-all-debug.js"></script>
+
+    <!-- Sample Core includes -->
+    <script type="text/javascript" src="xitems/fields/UserName.js"></script>
+    <script type="text/javascript" src="xitems/fields/EMail.js"></script>
+    <script type="text/javascript" src="xitems.js"></script>
+
+    <h1>xitems Plugin Sample - Omega Trick for Ext JS</h1>
+
+    <h2>ptype:t.xitems</h2>
+
+    <p>参照：<a href="xitems/fields/UserName.js">UserName.js</a>,<a href="xitems/fields/EMail.js">EMail.js</a></p>
+
+    <p>パネルなどコンテナーに設置するアイテム定義を短縮してxtype名のみで定義するプラグインです。</p>
+    <p>コンフィグオプションの"<strong>xitems</strong>"に、配列でxtypeを羅列します。<p>
+
+    <div id="renderarea"></div>
+
+    <pre class="code">
+new Ext.form.FormPanel({
+    title: 'Form Panel with Trick.plugins.Define',
+    padding: 20,
+    width: 300,
+    <strong>plugins: ['t.xitems']</strong>,
+    <strong>xitems: [
+        'UserName',
+        'EMail'
+    ]</strong>,
+    renderTo: Ext.get('renderarea')
+});
+</pre>
+
+    <hr />
+
+    <p>次の例は、プラグインを設置したコンテナーに直接配置されたxitemsでない場合にも動作するサンプルです。</p>
+    <p>xitemsプラグインは、ネストする複雑なレイアウトにも対応します。</p>
+
+    <div id="renderarea2"></div>
+
+    <pre class="code">
+new Ext.form.FormPanel({
+    title: 'Form Panel deep layout with Trick.plugins.xforms',
+    padding: 20,
+    width: 700,
+    <strong>plugins: ['t.xitems']</strong>,
+    layout: 'column',
+    defaultType: 'container',
+    items: [{
+        columnWidth: .5,
+        layout: 'form',
+        <strong>xitems: [
+            'UserName',
+            'EMail'
+        ]</strong>
+    },{
+        width: 25,
+        html: '&nbsp'
+    },{
+        columnWidth: .5,
+        layout: 'form',
+        <strong>xitems: [
+            'UserName',
+            'EMail'
+        ]</strong>
+    }],
+    renderTo: Ext.get('renderarea2')
+});
+</pre>
+</body>
+</html>

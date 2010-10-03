@@ -1,0 +1,81 @@
+/* vim: set expandtab tabstop=2 shiftwidth=2 softtabstop=2: */
+
+/**
+ * Omega Trick Library 0.5.0
+ * Copyright(c) 2006-2010 Xenophy.CO.,LTD All rights Reserved.
+ * http://omegatrick.com
+ * http://www.gnu.org/licenses/gpl-3.0.html
+ */
+
+/* ------------------------------
+ ダイアログ
+------------------------------ */
+.tx-signin {
+  z-index: 2100;
+}
+
+/* ------------------------------
+ ラッパー
+------------------------------ */
+.tx-signin-bwrap {
+  width: 410px;
+}
+
+/* ------------------------------
+ ヘッダー
+------------------------------ */
+.tx-signin-header {
+}
+
+.tx-signin-header .title {
+  padding: 6px 6px 5px 6px;
+  font-size: 1.2em;
+  font-weight :bold;
+}
+
+/* ------------------------------
+ アイテム
+------------------------------ */
+.tx-signin-items {
+  margin: 6px;
+}
+
+.tx-signin-items-inner {
+  padding: 6px;
+}
+
+
+/* ------------------------------
+ フォーム
+------------------------------ */
+.tx-signin-content .form th {
+  width: 100px;
+  padding: 5px;
+}
+
+.tx-signin-content .form .userid input {
+  width: 170px;
+}
+
+.tx-signin-content .form .passwd input {
+  width: 170px;
+}
+
+.tx-sigin-content input[type="checkbox"] {
+  margin-right:6px;
+}
+
+/* ------------------------------
+ パスワード紛失
+------------------------------ */
+.tx-signin .forget {
+  margin: 10px 0 0 6px;
+}
+
+/*
+ * Local variables:
+ * tab-width: 2
+ * c-basic-offset: 2
+ * c-hanging-comment-ender-p: nil
+ * End:
+ */

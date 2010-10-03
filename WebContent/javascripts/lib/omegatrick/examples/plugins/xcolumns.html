@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset=utf-8 />
+
+    <title>xcolumns Plugin Sample - Omega Trick for Ext JS</title>
+
+    <!-- Ext includes -->
+    <link rel="stylesheet" type="text/css" href="../../../ext/resources/css/ext-all.css" />
+    <link rel="stylesheet" type="text/css" href="../shared/examples.css" />
+
+    <!-- Omega Trick includes -->
+    <link rel="stylesheet" type="text/css" href="../../resources/css/omegatrick-all.css" />
+
+    <!-- Ext includes -->
+    <script type="text/javascript" src="../../../ext/adapter/ext/ext-base-debug.js"></script>
+    <script type="text/javascript" src="../../../ext/ext-all-debug.js"></script>
+
+</head>
+<body>
+
+    <!-- Omega Trick includes -->
+    <script type="text/javascript" src="../../omegatrick-all-debug.js"></script>
+
+    <!-- Sample Core includes -->
+    <script type="text/javascript" src="xcolumns/Company.js"></script>
+    <script type="text/javascript" src="xcolumns/Branches.js"></script>
+    <script type="text/javascript" src="xcolumns.js"></script>
+
+    <h1>xcolumns Plugin Sample - Omega Trick for Ext JS</h1>
+
+    <h2>ptype:t.xcolumns</h2>
+
+    <p>参照：<a href="xcolumns/Company.js">Company.js</a>,<a href="xcolumns/Branches.js">Branches.js</a></p>
+
+    <p>Ext.GridPanelに設定するExt.grid.ColumnModelのコンフィグオプション"<strong>columns</strong>"の定義をxtype名の配列で定義するxcolumnsを提供します。</p>
+    <p><strong>このプラグインを利用すると、columnsのコンフィグオプションは利用できません。</strong></p>
+
+    <div id="renderarea"></div>
+
+    <pre class="code">
+new Ext.grid.GridPanel({
+    title: 'Grid Panel with Trick.plugins.xcolumns',
+    width: 560,
+    height: 150,
+    <strong>plugins: ['t.xcolumns']</strong>,
+    store: {
+        xtype: 'arraystore',
+        fields: [
+            'company',
+            'branches'
+        ],
+        data: [
+            ['Alcoa Inc', 1],
+            ['Boeing Co.', 5],
+            ['Hewlett-Packard Co.', 2],
+            ['Wal-Mart Stores, Inc.', 9]
+        ]
+    },
+    colModel: new Ext.grid.ColumnModel({
+        <strong>xcolumns: [
+            'companycolumn',
+            'branchescolumn'
+        ]</strong>
+    }),
+    renderTo: 'renderarea'
+});
+</pre>
+</body>
+</html>

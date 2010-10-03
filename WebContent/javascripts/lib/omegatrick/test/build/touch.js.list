@@ -1,0 +1,12 @@
+src/core/OmegaTrick.js
+src/core/Ext.js
+src/core/Element.js
+src/core/util/TextMetrics.js
+src/core/Namespace.js
+src/util/Clone.js
+src/test/unit/TestCase.js
+src/test/unit/TestLogger.js
+src/test/unit/TestRunner.js
+src/test/unit/TestSuite.js
+src/app/App.js
+src/core/Namespace-touch.js

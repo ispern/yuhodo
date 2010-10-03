@@ -1,0 +1,10 @@
+/* @override http://matsuoka.mac/~hiromitsu/yuhodo/stylesheets/structure/core.css */
+
+.x-panel-item-link {
+	height: 100%;
+	margin: 5px;
+	text-align: right;
+}
+
+.x-panel-item-link a {
+}

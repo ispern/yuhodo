@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset=utf-8 />
+
+    <title>Trick.grid.GridPanel Sample - Omega Trick for Ext JS</title>
+
+    <!-- Ext includes -->
+    <link rel="stylesheet" type="text/css" href="../../../ext/resources/css/ext-all.css" />
+    <link rel="stylesheet" type="text/css" href="../shared/examples.css" />
+
+    <!-- Omega Trick includes -->
+    <link rel="stylesheet" type="text/css" href="../../resources/css/omegatrick-all.css" />
+
+    <!-- Ext includes -->
+    <script type="text/javascript" src="../../../ext/adapter/ext/ext-base-debug.js"></script>
+    <script type="text/javascript" src="../../../ext/ext-all-debug.js"></script>
+
+</head>
+<body>
+
+    <!-- Omega Trick includes -->
+    <script type="text/javascript" src="../../omegatrick-all-debug.js"></script>
+
+    <!-- Sample Core includes -->
+    <script type="text/javascript" src="GridPanel/Company.js"></script>
+    <script type="text/javascript" src="GridPanel/Branches.js"></script>
+    <script type="text/javascript" src="GridPanel.js"></script>
+
+    <h1>Trick.grid.GridPanel Sample - Omega Trick for Ext JS</h1>
+
+    <p>参照：<a href="GridPanel/Company.js">Company.js</a>,<a href="GridPanel/Branches.js">Branches.js</a></p>
+
+    <p>プラグインに、Trick.plugins.xcolumnsが初期状態で設定されています。</p>
+
+    <div id="renderarea"></div>
+
+    <pre class="code">
+new Trick.grid.GridPanel({
+    title: 'Trick.grid.GridPanel',
+    width: 560,
+    height: 150,
+    store: {
+        xtype: 'arraystore',
+        fields: [
+            'company',
+            'branches'
+        ],
+        data: [
+            ['Alcoa Inc', 1],
+            ['Boeing Co.', 5],
+            ['Hewlett-Packard Co.', 2],
+            ['Wal-Mart Stores, Inc.', 9]
+        ]
+    },
+    colModel: new Ext.grid.ColumnModel({
+        <strong>xcolumns: [
+            'companycolumn',
+            'branchescolumn'
+        ]</strong>
+    }),
+    renderTo: 'renderarea'
+});
+</pre>
+</body>
+</html>
