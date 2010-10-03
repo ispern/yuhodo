@@ -661,6 +661,7 @@ Ext.ux.google.map.View = Ext.extend(Ext.DataView, function () {
             var data = rec.data;
             if (!data || typeof data.lat !== 'number' || typeof data.lng !== 'number' || data.lat > 90 || data.lat < -90 || data.lng > 180 || data.lng < -180) return false;
 
+                console.log(data);
             var mrk_opt = Ext.apply(this.mrk_opt || {}, cfg || {});
             mrk_opt.position = new G.latlng(data.lat, data.lng);
 
@@ -753,6 +754,8 @@ Ext.ux.google.map.View = Ext.extend(Ext.DataView, function () {
         setCenter: function (lat, lng, zoom) {
             if (!_mapapiinitialized) return false;
 
+            var G = Ext.ux.google.map.View.prototype._G;
+
             if (lat instanceof Object) {
                 var cfg = lat;
                 return this.setCenter(cfg.lat, cfg.lng, cfg.zoom);
@@ -760,8 +763,9 @@ Ext.ux.google.map.View = Ext.extend(Ext.DataView, function () {
 
             if (typeof lat !== 'number' || typeof lng !== 'number' || lat > 90 || lat < -90 || lng > 180 || lng < -180) return false;
 
+                console.log(typeof zoom);
             if (typeof zoom === 'number') this.setZoom(zoom);
-            this.map.setCenter(new GLatLng(lat, lng));
+            this.map.setCenter(new G.latlng(lat, lng));
             return this;
         },
 

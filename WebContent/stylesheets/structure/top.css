@@ -20,11 +20,13 @@
 }
 
 .x-panel-form-searchtext {
+	display: block;
 	float:  left;
 	margin-left: 100px;
 	margin-right: 5px;
 }
 .x-panel-form-searchtext input {
+	height: 36px !important;
 	font-size: 20px;
 }
 

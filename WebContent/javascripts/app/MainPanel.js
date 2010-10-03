@@ -34,7 +34,7 @@ Yuhodo.MainPanel = Ext.extend(Ext.Panel, {
 
         me.top.on('search', me.onScreenChange, me);
         me.plan.on('beforeshow', function() {
-            me.plan.setSearchText(me.top.getSearchText());
+            me.plan.setCenter(me.top.getAddress());
         }, me);
     
         // スーパークラスメソッドコール

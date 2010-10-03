@@ -53,7 +53,7 @@ Yuhodo.Top.MainPanel = Ext.extend(Ext.Panel, {
 
         var me = this;
 
-        me.forms.searchtext.focus();
+        me.forms.combobox.focus();
     },
 
     onRender: function(ct, position) {
@@ -112,15 +112,33 @@ Yuhodo.Top.MainPanel = Ext.extend(Ext.Panel, {
             searchtextContainer = Ext.get(form.child('.' + me.searchtext)),
             searchbuttonContainer = Ext.get(form.child('.' + me.searchbutton));
 
-        // 検索テキスト生成
-        me.forms.searchtext = new Ext.form.TextField({
+        // 検索コンボボックス生成
+        me.forms.combobox = new Ext.form.ComboBox({
             tabIndex: 1,
             allowBlank: true,
             width: 500,
             height: 40,
+            store: new Ext.data.JsonStore({
+                proxy: new Ext.ux.google.map.Proxy({}),
+                root: 'data',
+                idProperty: 'id',
+                fields: ['id', 'address', 'lat', 'lng']
+            }),
+            triggerAction: 'all',
+            mode: 'remote',
+            displayField: 'address',
+            valueField: 'id',
+            loadingText: '検索中...',
+            selectOnFocus: true,
+            hiddenName: 'id',
+            enableKeyEvents: true,
+            hideTrigger: true,
+            tpl: new Ext.XTemplate('<tpl for="."><div class="search-item">', '住所:{address}', '</div></tpl>'),
+            itemSelector: 'div.search-item',
+            minChars: 2,
             scope: me,
             listeners: {
-                specialkey: me.onEnterPress,
+                keydown: me.onKeyDown,
                 scope: me
             },
             renderTo: searchtextContainer
@@ -142,18 +160,26 @@ Yuhodo.Top.MainPanel = Ext.extend(Ext.Panel, {
     },
 
     onSearch: function() {
-        Yuhodo.app.screenTo('plan');
-    },
-
-    getSearchText: function() {
-        return this.forms.searchtext.getValue();
-    },
-
-    onEnterPress: function(field, event) {
 
         var me = this;
 
-        if (event.getKey() === Ext.EventObject.ENTER) {
+        me.forms.combobox.view.setVisible(false);
+        Yuhodo.app.screenTo('plan');
+    },
+
+    getAddress: function() {
+
+        var me = this,
+            combobox = me.forms.combobox;
+
+        return combobox.getStore().getById(Ext.get(combobox.getName()).dom.value);
+    },
+
+    onKeyDown: function(field, event) {
+
+        var me = this;
+
+        if (event.getKey() === event.ENTER && !field.isExpanded()) {
             me.onSearch();
         }
     }

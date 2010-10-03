@@ -38,23 +38,6 @@ Application.setup({
 
         Yuhodo.app.comp = vp.mainpanel;
 
-        // Google Maps APIで使用するDirectionsServiceとDirectionsRendererの初期設定
-        var gm = google.maps,
-            map = vp.mainpanel.plan.map.getMap();
-        Yuhodo.directionsService = new Yuhodo.util.DirectionsService({
-            directionsService: new gm.DirectionsService(),
-            directionsRenderer: new gm.DirectionsRenderer({
-                draggable: true,
-                polylineOptions: {
-                    clickable: true,
-                    strokeColor: '#3FFF17',
-                    strokeOpacity: 0.5,
-                    strokeWeight: 3
-                }
-            }),
-            map: map
-        });
-
         // Cookie Provider生成
         new Ext.state.CookieProvider({
             expires: new Date(new Date().getTime()+(1000*60*60*24*7))

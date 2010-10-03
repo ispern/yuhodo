@@ -1,11 +1,16 @@
 Yuhodo.Plan.MainPanel = Ext.extend(Ext.Panel, {
 
-    // 検索キーワード
-    searchText: '',
+    ZOOM_LEVEL: 16,
+
+    center: undefined,
 
     initComponent: function() {
 
         var me = this;
+
+        var infoWindowTpl = new Ext.XTemplate('<div class="info-window">',
+                                           '    <h3>{address}</h3>',
+                                           '</div>');
     
         // 設定適用
         Ext.apply(me, {
@@ -25,13 +30,17 @@ Yuhodo.Plan.MainPanel = Ext.extend(Ext.Panel, {
             },{
                 region: 'center',
                 border: false,
+                id: 'map',
                 ref: 'map',
-                xtype: 'gmappanel',
-                gmapType: 'map',
-                zoomLevel: 16,
-                setCenter: {
-                    lat: 35.319031,
-                    lng: 139.550703
+                tpl: infoWindowTpl,
+                xtype: 'gmapview',
+                mapconfig: {
+                    gmapTypeId: 'map',
+                    zoomLevel: me.ZOOM_LEVEL,
+                    setCenter: {
+                        lat: 35.319031,
+                        lng: 139.550703
+                    }
                 }
             }]
         });
@@ -77,38 +86,20 @@ Yuhodo.Plan.MainPanel = Ext.extend(Ext.Panel, {
 
     show: function() {
 
-        var me = this;
+        var me = this,
+            map = me.map;
 
         Yuhodo.Plan.MainPanel.superclass.show.call(me);
 
-        me.onSearch();
-    },
+        // Mapsのリサイズイベント発火
+        google.maps.event.trigger(me.map.getMap(), 'resize');
 
-    /*
-     * 検索キーワードから座標を検索する。
-     */
-    onSearch: function() {
-
-        var me = this,
-            gm = google.maps;
-
-        var geocoder = new gm.Geocoder();
-        geocoder.geocode({'address': me.searchText, region: 'jp'}, function(results, status) {
-            if (status == google.maps.GeocoderStatus.OK) {
-                var option = {
-                    infoWindow: {
-                        content: results[0].address_components[0].long_name,
-                        size: new gm.Size(100, 50)
-                    }
-                },
-                location = results[0].geometry.location;
-                me.map.addMarker(location, option, true, true);
-                Yuhodo.directionsService.setOrigin(location);
-            } else {
-                Ext.Msg.alert('Info', 'no data');
-            }
-        });
-        me.onAroundSearch();
+        if (me.center) {
+            var center = me.center,
+                data = center.data;
+            map.setCenter(data.lat, data.lng, me.ZOOM_LEVEL);
+            map.createMarker(center, map.getConfig(center.id));
+        }
     },
 
     /*
@@ -161,8 +152,8 @@ Yuhodo.Plan.MainPanel = Ext.extend(Ext.Panel, {
         return true;
     },
 
-    setSearchText: function(searchText) {
-        this.searchText = searchText;
+    setCenter: function(record) {
+        this.center = record;
     }
 });
 
