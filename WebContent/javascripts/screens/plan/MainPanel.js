@@ -197,7 +197,7 @@ Yuhodo.Plan.MainPanel = Ext.extend(Ext.Panel, {
 
         Ext.each(records, function(item) {
             var cfg = map.getConfig(item.id);
-            cfg.icon = 'images/blue-pin.png';
+            cfg.icon = 'images/hiking.png';
             map.createMarker(item, cfg);
         }, me);
         return true;
