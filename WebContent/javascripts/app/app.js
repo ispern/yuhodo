@@ -56,7 +56,13 @@ Yuhodo.app = {
         /**
          * Yahoo ローカルサーチAPI
          */
-        YahooLocalSearch: 'http://map.yahooapis.jp/LocalSearchService/V1/LocalSearch?appid=WHrlBmSxg65INUqUaY90kDYiX7l65uR_gchCYcpqp49UJdVxBcaTCfjzlaxLAQzqbUtyXg--'
+        YahooLocalSearch: 'http://map.yahooapis.jp/LocalSearchService/V1/LocalSearch?appid=WHrlBmSxg65INUqUaY90kDYiX7l65uR_gchCYcpqp49UJdVxBcaTCfjzlaxLAQzqbUtyXg--',
+
+        /**
+         * Mapion ローカルサーチAPI
+         */
+        MapionLocalSearch: 'http://searchapi-stg.mapion.co.jp/search/ver1/localsearch/'
+    
     
     },
 

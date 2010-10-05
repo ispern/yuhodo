@@ -9,8 +9,9 @@ Yuhodo.Plan.MainPanel = Ext.extend(Ext.Panel, {
         var me = this;
 
         var infoWindowTpl = new Ext.XTemplate('<div class="info-window">',
-                                           '    <h3>{address}</h3>',
-                                           '</div>');
+                                               '    <h3>{title}</h3>',
+                                               '    <span>住所:{address}</span>',
+                                               '</div>');
     
         // 設定適用
         Ext.apply(me, {
@@ -41,7 +42,10 @@ Yuhodo.Plan.MainPanel = Ext.extend(Ext.Panel, {
                         lat: 35.319031,
                         lng: 139.550703
                     }
-                }
+                },
+                store: new Ext.data.JsonStore({
+                    fields: ['id', 'address', 'lat', 'lng']
+                })
             }]
         });
 
@@ -69,18 +73,72 @@ Yuhodo.Plan.MainPanel = Ext.extend(Ext.Panel, {
         var me = this;
 
         // Yahoo ローカルサーチAPIのストア生成
+        // me.store = new Ext.data.JsonStore({
+            // proxy: new Ext.data.ScriptTagProxy({
+                // url: Yuhodo.app.url.YahooLocalSearch
+            // }),
+            // baseParams: {
+                // category: 'landmark',
+                // dist: 5,
+                // n: 30,
+                // o: 'json'
+            // },
+            // root: 'Item',
+            // fields: [{
+                // name: 'title',
+                // mapping: 'Title'
+            // },{
+                // name: 'address',
+                // mapping: 'Address'
+            // },{
+                // name: 'lat',
+                // mapping: 'DatumWgs84.Lat'
+            // },{
+                // name: 'lng',
+                // mapping: 'DatumWgs84.Lon'
+            // },{
+                // name: 'url',
+                // mapping: 'Url'
+            // }]
+        // });
+
+
         me.store = new Ext.data.JsonStore({
             proxy: new Ext.data.ScriptTagProxy({
-                url: Yuhodo.app.url.YahooLocalSearch
+                url: Yuhodo.app.url.MapionLocalSearch + 'landmark/',
+                nocache: false
             }),
             baseParams: {
-                category: 'landmark',
-                dist: 5,
-                n: 100,
-                o: 'json'
+                key: 'MA6',
+                ot: 'jsonp',
+                rows: '50'
             },
-            root: 'Item',
-            fields: ['Category', 'Title', 'DatumWgs84', 'Url']
+            root: 'Result.ResultList',
+            fields: [{
+                // 緯度
+                name: 'lat',
+                mapping: 'lat'
+            },{
+                // 経度
+                name: 'lng',
+                mapping: 'lon'
+            },{
+                // ジャンル2の名前
+                name: 'gnr2_name',
+                mapping: 'gnr2_name'
+            },{
+                // 地名
+                name: 'title',
+                mapping: 'poi_name'
+            },{
+                // 郵便番号
+                name: 'zip',
+                mapping: 'zip'
+            },{
+                // 住所
+                name: 'address',
+                mapping: 'address'
+            }]
         });
     },
 
@@ -99,6 +157,8 @@ Yuhodo.Plan.MainPanel = Ext.extend(Ext.Panel, {
                 data = center.data;
             map.setCenter(data.lat, data.lng, me.ZOOM_LEVEL);
             map.createMarker(center, map.getConfig(center.id));
+
+            me.onAroundSearch();
         }
     },
 
@@ -111,8 +171,15 @@ Yuhodo.Plan.MainPanel = Ext.extend(Ext.Panel, {
 
         me.store.load({
             params: {
-                p: me.searchText,
-                n: 20
+
+                // ジャンル:観光・温泉
+                gnr: 'M06',
+
+                // 緯度
+                lat: me.center.data.lat,
+
+                // 経度
+                lon: me.center.data.lng
             },
             callback: me.onAddMarker,
             scope: me
@@ -122,33 +189,17 @@ Yuhodo.Plan.MainPanel = Ext.extend(Ext.Panel, {
     onAddMarker: function(records, option, result) {
 
         var me = this,
-            gm = google.maps;
+            map = me.map;
 
         if (!result) {
             return false;
         }
 
-        var markers = [];
         Ext.each(records, function(item) {
-            markers.push({
-                lat: 1*item.data.DatumWgs84.Lat,
-                lng: 1*item.data.DatumWgs84.Lon,
-                marker: {
-                    title: item.Title,
-                    icon: 'images/red-marker.png'
-                },
-                listeners: {
-                    click: function() {
-                        var location = this.getPosition(),
-                            ds = Yuhodo.directionsService;
-
-                        ds.addWayPoint(location);
-                        ds.route();
-                    }
-                }
-            });
+            var cfg = map.getConfig(item.id);
+            cfg.icon = 'images/blue-pin.png';
+            map.createMarker(item, cfg);
         }, me);
-        me.map.addMarkers(markers);
         return true;
     },
 

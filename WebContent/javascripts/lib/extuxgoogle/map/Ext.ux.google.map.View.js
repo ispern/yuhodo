@@ -659,9 +659,10 @@ Ext.ux.google.map.View = Ext.extend(Ext.DataView, function () {
 
             // rec must be a Ext.data.Record instance and must have lat/lng
             var data = rec.data;
+            data.lat = 1*data.lat;
+            data.lng = 1*data.lng;
             if (!data || typeof data.lat !== 'number' || typeof data.lng !== 'number' || data.lat > 90 || data.lat < -90 || data.lng > 180 || data.lng < -180) return false;
 
-                console.log(data);
             var mrk_opt = Ext.apply(this.mrk_opt || {}, cfg || {});
             mrk_opt.position = new G.latlng(data.lat, data.lng);
 
@@ -763,7 +764,6 @@ Ext.ux.google.map.View = Ext.extend(Ext.DataView, function () {
 
             if (typeof lat !== 'number' || typeof lng !== 'number' || lat > 90 || lat < -90 || lng > 180 || lng < -180) return false;
 
-                console.log(typeof zoom);
             if (typeof zoom === 'number') this.setZoom(zoom);
             this.map.setCenter(new G.latlng(lat, lng));
             return this;
@@ -946,7 +946,6 @@ Ext.ux.google.map.View = Ext.extend(Ext.DataView, function () {
                 waypoints: me.waypoints.items
             };
 
-            console.log(option);
             me.directionsService.route(option, function(result, status) {
                 if (status == google.maps.DirectionsStatus.OK) {
                     me.directionsRenderer.setDirections(result);
