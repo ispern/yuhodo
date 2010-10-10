@@ -13,6 +13,8 @@ Yuhodo.Plan.MainPanel = Ext.extend(Ext.Panel, {
                                                '    <span>住所:{address}</span>',
                                                '</div>');
     
+        me.store = new Yuhodo.data.MapionLocalSearchStore({});
+
         // 設定適用
         Ext.apply(me, {
 
@@ -22,12 +24,18 @@ Yuhodo.Plan.MainPanel = Ext.extend(Ext.Panel, {
 
             items: [{
                 region: 'west',
-                title: 'サイドバー',
+                title: 'スポット情報',
                 collapsible: true,
                 border: true,
-                width: 200,
+                width: 300,
                 split: true,
-                html: 'サイド'
+                layout: 'fit',
+                items: {
+                    xtype: 'yuhodo-plan-spotview',
+                    store : me.store
+                },
+                id: 'spotview',
+                ref: 'spotview'
             },{
                 region: 'center',
                 border: false,
@@ -102,44 +110,43 @@ Yuhodo.Plan.MainPanel = Ext.extend(Ext.Panel, {
             // }]
         // });
 
-
-        me.store = new Ext.data.JsonStore({
-            proxy: new Ext.data.ScriptTagProxy({
-                url: Yuhodo.app.url.MapionLocalSearch + 'landmark/',
-                nocache: false
-            }),
-            baseParams: {
-                key: 'MA6',
-                ot: 'jsonp',
-                rows: '50'
-            },
-            root: 'Result.ResultList',
-            fields: [{
-                // 緯度
-                name: 'lat',
-                mapping: 'lat'
-            },{
-                // 経度
-                name: 'lng',
-                mapping: 'lon'
-            },{
-                // ジャンル2の名前
-                name: 'gnr2_name',
-                mapping: 'gnr2_name'
-            },{
-                // 地名
-                name: 'title',
-                mapping: 'poi_name'
-            },{
-                // 郵便番号
-                name: 'zip',
-                mapping: 'zip'
-            },{
-                // 住所
-                name: 'address',
-                mapping: 'address'
-            }]
-        });
+        // me.store = new Ext.data.JsonStore({
+            // proxy: new Ext.data.ScriptTagProxy({
+                // url: Yuhodo.app.url.MapionLocalSearch + 'landmark/',
+                // nocache: false
+            // }),
+            // baseParams: {
+                // key: 'MA6',
+                // ot: 'jsonp',
+                // rows: '50'
+            // },
+            // root: 'Result.ResultList',
+            // fields: [{
+                // // 緯度
+                // name: 'lat',
+                // mapping: 'lat'
+            // },{
+                // // 経度
+                // name: 'lng',
+                // mapping: 'lon'
+            // },{
+                // // ジャンル2の名前
+                // name: 'gnr2_name',
+                // mapping: 'gnr2_name'
+            // },{
+                // // 地名
+                // name: 'title',
+                // mapping: 'poi_name'
+            // },{
+                // // 郵便番号
+                // name: 'zip',
+                // mapping: 'zip'
+            // },{
+                // // 住所
+                // name: 'address',
+                // mapping: 'address'
+            // }]
+        // });
     },
 
     show: function() {

@@ -1,0 +1,13 @@
+/* @override http://matsuoka.mac/~hiromitsu/yuhodo/stylesheets/structure/plan.css */
+
+.item {
+	padding: 10px;
+}
+
+.item .gnr {
+	margin-bottom: 5px;
+}
+
+.item .address {
+	margin-top: 5px;
+}
