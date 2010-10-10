@@ -3,7 +3,7 @@
 .item {
 	background-color: #fff;
 	overflow: hidden;
-	border-bottom: 1px solid #dedede;
+	border-bottom: 1px dashed #dedede;
 }
 
 .item .title {
@@ -16,9 +16,9 @@
 }
 
 .item-over {
-	background-color: #dddddd;
+	background-color: #FFF4ED;
 }
 
 .item-selected {
-	background-color: #D6F8C9;
+	background-color: #FFECE0;
 }
