@@ -35,6 +35,7 @@ Yuhodo.Top.MainPanel = Ext.extend(Ext.Panel, {
         Yuhodo.Top.MainPanel.superclass.initComponent.call(me);
     },
 
+    // private
     initEvents: function() {
         var me = this;
 
@@ -50,6 +51,7 @@ Yuhodo.Top.MainPanel = Ext.extend(Ext.Panel, {
         me.on('afterrender', me.onAfterRender, me);
     },
 
+    // private
     onAfterRender: function() {
 
         var me = this;
@@ -57,10 +59,12 @@ Yuhodo.Top.MainPanel = Ext.extend(Ext.Panel, {
         me.forms.combobox.focus();
     },
 
+    // private
     onRender: function(ct, position) {
 
         var me = this;
 
+        // 画面生成
         me.el = ct.createChild({
             cls: me.baseCls,
             children: [
@@ -175,14 +179,20 @@ Yuhodo.Top.MainPanel = Ext.extend(Ext.Panel, {
         });
     },
 
+    /**
+     * 検索ボタンクリック時のイベント
+     */
     onSearch: function() {
 
         var me = this;
 
-        // me.forms.combobox.view.setVisible(false);
+        me.forms.combobox.view.setVisible(false);
         Yuhodo.app.screenTo('plan');
     },
 
+    /**
+     * 選択した住所または検索キーワードを取得する。
+     */
     getAddress: function() {
 
         var me = this,
@@ -191,6 +201,9 @@ Yuhodo.Top.MainPanel = Ext.extend(Ext.Panel, {
         return combobox.getStore().getById(Ext.get(combobox.getName()).dom.value);
     },
 
+    /**
+     * コンボボックスでのkeydownイベント
+     */
     onKeyDown: function(field, event) {
 
         var me = this;
