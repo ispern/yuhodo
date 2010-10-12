@@ -186,7 +186,13 @@ Yuhodo.Top.MainPanel = Ext.extend(Ext.Panel, {
 
         var me = this;
 
+        // サジェストリストを非表示
         me.forms.combobox.view.setVisible(false);
+
+        // コンボボックスのフォーカスを外す
+        me.forms.combobox.el.dom.blur();
+
+        // 画面を"plan"に切り替え
         Yuhodo.app.screenTo('plan');
     },
 
@@ -211,6 +217,20 @@ Yuhodo.Top.MainPanel = Ext.extend(Ext.Panel, {
         if (event.getKey() === event.ENTER && !field.isExpanded()) {
             me.onSearch();
         }
+    },
+
+    // private
+    show: function() {
+        var me = this;
+
+        // サジェストリストを表示
+        me.forms.combobox.view.setVisible(true);
+
+        // コンボボックスにフォーカス
+        me.forms.combobox.focus();
+
+        // スーパークラスメソッドコール
+        Yuhodo.Top.MainPanel.superclass.show.call(me);
     }
 });
 
