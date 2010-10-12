@@ -1,5 +1,6 @@
 Yuhodo.MainPanel = Ext.extend(Ext.Panel, {
 
+    // private
     initComponent: function() {
 
         var me = this;
@@ -14,10 +15,14 @@ Yuhodo.MainPanel = Ext.extend(Ext.Panel, {
             layout: 'slickcard',
 
             items: [{
+
+                // トップ画面
                 xtype: 'yuhodo-top',
                 id: 'top',
                 ref: 'top'
             },{
+
+                // ルート作成画面
                 xtype: 'yuhodo-plan',
                 id: 'plan',
                 ref: 'plan'
@@ -28,6 +33,7 @@ Yuhodo.MainPanel = Ext.extend(Ext.Panel, {
         Yuhodo.MainPanel.superclass.initComponent.call(me);
     },
 
+    // private
     initEvents: function() {
 
         var me = this;
@@ -44,6 +50,7 @@ Yuhodo.MainPanel = Ext.extend(Ext.Panel, {
         me.on('afterrender', me.onAfterRender, me);
     },
 
+    // private
     onAfterRender: function() {
 
         var me = this;

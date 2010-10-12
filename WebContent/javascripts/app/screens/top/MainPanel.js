@@ -1,5 +1,6 @@
 Yuhodo.Top.MainPanel = Ext.extend(Ext.Panel, {
 
+    // private
     initComponent: function() {
         var me = this;
 
@@ -64,10 +65,15 @@ Yuhodo.Top.MainPanel = Ext.extend(Ext.Panel, {
             cls: me.baseCls,
             children: [
                 {
+                    // body部
                     cls: me.bodyCls,
                     children: [{
+
+                        // item部
                         cls: me.itemsCls,
                         children: [{
+
+                            // ロゴ
                             cls: me.itemCls,
                             children: [{
                                 tag: 'img',
@@ -75,17 +81,25 @@ Yuhodo.Top.MainPanel = Ext.extend(Ext.Panel, {
                                 cls: me.itemLogoCls
                             }]
                         },{
+
+                            // 説明
                             cls: me.itemCls,
                             children: [{
                                 cls: me.itemDescription,
                                 html: '説明をここに記載'
                             }]
                         },{
+
+                            // form部
                             cls: me.formCls,
                             children: [{
+
+                                // コンボボックス
                                 tag: 'span',
                                 cls: me.searchtext
                             },{
+
+                                // 検索ボタン
                                 tag: 'span',
                                 cls: me.searchbutton
                             }]
@@ -95,8 +109,10 @@ Yuhodo.Top.MainPanel = Ext.extend(Ext.Panel, {
             ]
         });
 
+        // スーパークラスメソッドコール
         Yuhodo.Top.MainPanel.superclass.onRender.call(me, ct, position);
 
+        // DOMのキャッシュ
         me.itemDescription = Ext.get(me.el.child('.' + me.itemDescription));
         me.form = Ext.get(me.el.child('.' + me.formCls));
 
@@ -163,7 +179,7 @@ Yuhodo.Top.MainPanel = Ext.extend(Ext.Panel, {
 
         var me = this;
 
-        me.forms.combobox.view.setVisible(false);
+        // me.forms.combobox.view.setVisible(false);
         Yuhodo.app.screenTo('plan');
     },
 

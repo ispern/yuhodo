@@ -1,5 +1,6 @@
 Yuhodo.Plan.SpotView = Ext.extend(Ext.DataView, {
 
+    // スポット情報のテンプレートHTML
     tpl: [
         '<tpl for=".">',
         '   <div class="item">',
@@ -10,8 +11,10 @@ Yuhodo.Plan.SpotView = Ext.extend(Ext.DataView, {
         '</tpl>'
     ],
 
+    // レコード選択時のclass名
     selectedClass: 'item-selected',
-    
+
+    // private
     initComponent: function() {
         var me = this;
     
@@ -27,6 +30,7 @@ Yuhodo.Plan.SpotView = Ext.extend(Ext.DataView, {
         Yuhodo.Plan.SpotView.superclass.initComponent.call(me);
     },   
 
+    // private
     initEvents: function() {
         var me = this;
     
@@ -37,6 +41,7 @@ Yuhodo.Plan.SpotView = Ext.extend(Ext.DataView, {
         me.on('afterrender', me.onAfterRender, me);
     },
 
+    // private
     onAfterRender: function() {
     }
 });

@@ -1,10 +1,13 @@
 // ネームスペース
 Ext.ns('Yuhodo', 'Yuhodo.data', 'Yuhodo.Top', 'Yuhodo.Plan', 'Yuhodo.util');
 
+// アプリケーションセットアップ
 Application.setup({
     
+    // History有効
     useHistory: true,
 
+    // 初期設定
     onReady: function() {
 
         var me = this;
@@ -20,15 +23,20 @@ Application.setup({
             layout: 'border',
 
             items: [{
+
+                // メイン部分
                 id: 'mainpanel',
                 ref: 'mainpanel',
                 xtype: 'yuhodo-mainpanel'
             },{
+
+                // ツールバー部分
                 id: 'toolbar',
                 ref: 'toolbar',
                 xtype: 'yuhodo-toolbar'
             }],
 
+            // ヒストリー変更時のイベント
             onHistoryChange: function(token) {
                 if (Ext.isString(token)) {
                     this.mainpanel.getLayout().setActiveItem(token);
@@ -79,6 +87,7 @@ Yuhodo.app = {
         }
     },
 
+    // 画面切り替え
     screenTo: function(name) {
 
         var me = this;
