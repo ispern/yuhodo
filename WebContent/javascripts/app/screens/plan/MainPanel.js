@@ -1,43 +1,35 @@
 Yuhodo.Plan.MainPanel = Ext.extend(Ext.Panel, {
 
-    // Google Mapのズームレベル
-    ZOOM_LEVEL: 16,
-
-    center: undefined,
-
     // private
     initComponent: function() {
 
         var me = this;
 
-        var infoWindowTpl = new Ext.XTemplate('<div class="info-window">',
-                                               '    <div class="title">{title}</div>',
-                                               '    <div class="address">〒{zip}<br/>{address}</div> ',
-                                               '    <div class="route"><a id="add" href="#">ルートに追加</a></div>',
-                                               '</div>');
-    
         me.store = new Yuhodo.data.MapionLocalSearchStore({});
 
         // 設定適用
         Ext.apply(me, {
-
             layout: 'border',
-
             border: false,
-
             items: [{
                 region: 'west',
-                title: 'スポット情報',
+                id: 'spotpanel',
+                ref: 'spotpanel',
+                title: 'ルート情報',
                 collapsible: true,
                 width: 300,
                 split: true,
                 layout: 'fit',
                 items: {
+
+                    // スポット情報
                     xtype: 'yuhodo-plan-spotview',
-                    store : me.store,
                     id: 'spotview',
-                    ref: 'spotview'
+                    ref: 'spotview',
+                    store : me.store
                 },
+
+                // ツールバー
                 tbar: new Ext.Toolbar({
                     items: [{
                         ref: 'addroot',
@@ -45,27 +37,12 @@ Yuhodo.Plan.MainPanel = Ext.extend(Ext.Panel, {
                         text: 'ルートに追加',
                         disabled: true
                     }]
-                }),
-                id: 'spotpanel',
-                ref: 'spotpanel'
+                })
             },{
                 region: 'center',
-                id: 'map',
-                ref: 'map',
-                title: 'aaa',
-                tpl: infoWindowTpl,
-                xtype: 'gmapview',
-                mapconfig: {
-                    gmapTypeId: 'map',
-                    zoomLevel: me.ZOOM_LEVEL,
-                    setCenter: {
-                        lat: 35.319031,
-                        lng: 139.550703
-                    }
-                },
-                store: new Ext.data.JsonStore({
-                    fields: ['id', 'address', 'lat', 'lng']
-                })
+                id: 'mappanel',
+                ref: 'mappanel',
+                xtype: 'yuhodo-plan-mappanel'
             }]
         });
 
@@ -97,22 +74,14 @@ Yuhodo.Plan.MainPanel = Ext.extend(Ext.Panel, {
     // private
     show: function() {
 
-        var me = this,
-            map = me.map;
+        var me = this;
 
+        // スーパークラスメソッドコール
         Yuhodo.Plan.MainPanel.superclass.show.call(me);
 
-        // Mapsのリサイズイベント発火
-        google.maps.event.trigger(me.map.getMap(), 'resize');
+        // MapPanelのshowイベント発火
+        me.mappanel.fireEvent('show');
 
-        if (me.center) {
-            var center = me.center,
-                data = center.data;
-            map.setCenter(data.lat, data.lng, me.ZOOM_LEVEL);
-            map.createMarker(center, map.getConfig(center.id));
-
-            me.onAroundSearch();
-        }
     },
 
     /**
@@ -176,13 +145,6 @@ Yuhodo.Plan.MainPanel = Ext.extend(Ext.Panel, {
         map.openInfoWindow(marker);
 
         me.spotpanel.getTopToolbar().addroot.setDisabled(false);
-    },
-
-    /**
-     * Google Mapのcenterを設定する
-     */
-    setCenter: function(record) {
-        this.center = record;
     }
 });
 
