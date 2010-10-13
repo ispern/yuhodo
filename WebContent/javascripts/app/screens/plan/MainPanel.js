@@ -1,16 +1,19 @@
 Yuhodo.Plan.MainPanel = Ext.extend(Ext.Panel, {
 
+    // Google Mapのズームレベル
     ZOOM_LEVEL: 16,
 
     center: undefined,
 
+    // private
     initComponent: function() {
 
         var me = this;
 
         var infoWindowTpl = new Ext.XTemplate('<div class="info-window">',
-                                               '    <h3>{title}</h3>',
-                                               '    <span>住所:{address}</span>',
+                                               '    <div class="title">{title}</div>',
+                                               '    <div class="address">〒{zip}<br/>{address}</div> ',
+                                               '    <div class="route"><a id="add" href="#">ルートに追加</a></div>',
                                                '</div>');
     
         me.store = new Yuhodo.data.MapionLocalSearchStore({});
@@ -26,21 +29,30 @@ Yuhodo.Plan.MainPanel = Ext.extend(Ext.Panel, {
                 region: 'west',
                 title: 'スポット情報',
                 collapsible: true,
-                border: true,
                 width: 300,
                 split: true,
                 layout: 'fit',
                 items: {
                     xtype: 'yuhodo-plan-spotview',
-                    store : me.store
+                    store : me.store,
+                    id: 'spotview',
+                    ref: 'spotview'
                 },
-                id: 'spotview',
-                ref: 'spotview'
+                tbar: new Ext.Toolbar({
+                    items: [{
+                        ref: 'addroot',
+                        xtype: 'button',
+                        text: 'ルートに追加',
+                        disabled: true
+                    }]
+                }),
+                id: 'spotpanel',
+                ref: 'spotpanel'
             },{
                 region: 'center',
-                border: false,
                 id: 'map',
                 ref: 'map',
+                title: 'aaa',
                 tpl: infoWindowTpl,
                 xtype: 'gmapview',
                 mapconfig: {
@@ -61,6 +73,7 @@ Yuhodo.Plan.MainPanel = Ext.extend(Ext.Panel, {
         Yuhodo.Plan.MainPanel.superclass.initComponent.call(me);
     },
 
+    // private
     initEvents: function() {
 
         var me = this;
@@ -68,6 +81,7 @@ Yuhodo.Plan.MainPanel = Ext.extend(Ext.Panel, {
         me.addEvents('search', 'aroundsearch');
 
         me.on('aroundsearch', me.onAroundSearch, me);
+        me.spotpanel.spotview.on('beforeselect', me.onShowInfoWindow, me);
     
         // スーパークラスメソッドコール
         Yuhodo.Plan.MainPanel.superclass.initEvents.call(me);
@@ -76,79 +90,11 @@ Yuhodo.Plan.MainPanel = Ext.extend(Ext.Panel, {
         me.on('afterrender', me.onAfterRender, me);
     },
 
+    // private
     onAfterRender: function() {
-
-        var me = this;
-
-        // Yahoo ローカルサーチAPIのストア生成
-        // me.store = new Ext.data.JsonStore({
-            // proxy: new Ext.data.ScriptTagProxy({
-                // url: Yuhodo.app.url.YahooLocalSearch
-            // }),
-            // baseParams: {
-                // category: 'landmark',
-                // dist: 5,
-                // n: 30,
-                // o: 'json'
-            // },
-            // root: 'Item',
-            // fields: [{
-                // name: 'title',
-                // mapping: 'Title'
-            // },{
-                // name: 'address',
-                // mapping: 'Address'
-            // },{
-                // name: 'lat',
-                // mapping: 'DatumWgs84.Lat'
-            // },{
-                // name: 'lng',
-                // mapping: 'DatumWgs84.Lon'
-            // },{
-                // name: 'url',
-                // mapping: 'Url'
-            // }]
-        // });
-
-        // me.store = new Ext.data.JsonStore({
-            // proxy: new Ext.data.ScriptTagProxy({
-                // url: Yuhodo.app.url.MapionLocalSearch + 'landmark/',
-                // nocache: false
-            // }),
-            // baseParams: {
-                // key: 'MA6',
-                // ot: 'jsonp',
-                // rows: '50'
-            // },
-            // root: 'Result.ResultList',
-            // fields: [{
-                // // 緯度
-                // name: 'lat',
-                // mapping: 'lat'
-            // },{
-                // // 経度
-                // name: 'lng',
-                // mapping: 'lon'
-            // },{
-                // // ジャンル2の名前
-                // name: 'gnr2_name',
-                // mapping: 'gnr2_name'
-            // },{
-                // // 地名
-                // name: 'title',
-                // mapping: 'poi_name'
-            // },{
-                // // 郵便番号
-                // name: 'zip',
-                // mapping: 'zip'
-            // },{
-                // // 住所
-                // name: 'address',
-                // mapping: 'address'
-            // }]
-        // });
     },
 
+    // private
     show: function() {
 
         var me = this,
@@ -169,7 +115,7 @@ Yuhodo.Plan.MainPanel = Ext.extend(Ext.Panel, {
         }
     },
 
-    /*
+    /**
      * 検索キーワードの周辺スポットを検索する。
      */
     onAroundSearch: function() {
@@ -193,6 +139,9 @@ Yuhodo.Plan.MainPanel = Ext.extend(Ext.Panel, {
         });
     },
 
+    /**
+     * Google Mapにマーカーを追加する。
+     */
     onAddMarker: function(records, option, result) {
 
         var me = this,
@@ -210,6 +159,28 @@ Yuhodo.Plan.MainPanel = Ext.extend(Ext.Panel, {
         return true;
     },
 
+    /**
+     * 選択したノードのInfoWindowを表示する。
+     */
+    onShowInfoWindow: function(spotview, node, selections) {
+        var me = this,
+            map = me.map;
+
+        // Recordオブジェクトを取得
+        var record = me.spotpanel.spotview.getRecord(node);
+
+        // google.maps.Markerオブジェクトを取得
+        var marker = map.getMarkerById(record.id);
+
+        // InfoWindowを表示
+        map.openInfoWindow(marker);
+
+        me.spotpanel.getTopToolbar().addroot.setDisabled(false);
+    },
+
+    /**
+     * Google Mapのcenterを設定する
+     */
     setCenter: function(record) {
         this.center = record;
     }

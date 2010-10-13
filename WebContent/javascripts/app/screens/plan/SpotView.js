@@ -21,7 +21,7 @@ Yuhodo.Plan.SpotView = Ext.extend(Ext.DataView, {
         // 設定適用
         Ext.apply(me, {
             itemSelector: 'div.item',
-            singleSelect: true,
+            multiSelect: true,
             overClass: 'item-over',
             autoScroll: true
         });
