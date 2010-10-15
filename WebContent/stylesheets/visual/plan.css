@@ -22,3 +22,7 @@
 .item-selected {
 	background-color: #FFECE0;
 }
+
+.y-icon-search {
+    background-image: url(../../images/search-icon.png) !important;
+}

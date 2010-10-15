@@ -11,7 +11,7 @@ Yuhodo.data.MapionLocalSearchStore = Ext.extend(Ext.data.JsonStore, {
         // 設定適用
         Ext.apply(cfg, {
             proxy: new Ext.data.ScriptTagProxy({
-                url: Yuhodo.app.url.MapionLocalSearch + me.category,
+                url: 'http://searchapi-stg.mapion.co.jp/search/ver1/localsearch/' + me.category,
                 nocache: false
             }),
             baseParams: {

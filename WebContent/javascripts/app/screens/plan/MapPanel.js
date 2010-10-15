@@ -10,6 +10,7 @@ Yuhodo.Plan.MapPanel = Ext.extend(Ext.Panel, {
 
         var me = this;
 
+        // InfoWindowのテンプレートHTML
         var infoWindowTpl = new Ext.XTemplate('<div class="info-window">',
                                                '    <div class="title">{title}</div>',
                                                '    <div class="address">〒{zip}<br/>{address}</div> ',
@@ -21,16 +22,34 @@ Yuhodo.Plan.MapPanel = Ext.extend(Ext.Panel, {
             title: 'Map',
             xtype: 'container',
             layout: 'border',
+            tbar: new Ext.Toolbar({
+                items: [{
+                    text: '詳細検索',
+                    ref: 'detailsearchbtn',
+                    iconCls: 'y-icon-search',
+                    enableToggle: true,
+                    toggleHandler: me.onShowSearchForm,
+                    scope: me
+                }]
+            }),
             items: [{
+                xtype: 'yuhodo-plan-formpanel',
                 region: 'north',
-                html: 'Form Panel'
+                ref: 'searchform',
+                id: 'searchform',
+                height: 150,
+                collapsed: true,
+                split: true,
+                collapseMode: 'mini',
+                listeners: {
+                    collapse: me.onChangeToggle,
+                    expand: me.onChangeToggle,
+                    scope: me
+                }
             },{
                 xtype: 'gmapview',
-
                 region: 'center',
-
                 ref: 'map',
-
                 id: 'map',
 
                 // InfoWindowのテンプレート
@@ -72,7 +91,7 @@ Yuhodo.Plan.MapPanel = Ext.extend(Ext.Panel, {
     
         // レンダリング後のイベント定義
         me.on('afterrender', me.onAfterRender, me);
-        me.on('show', me.show, me);
+        me.on('show', me.onShowMap, me);
     },
 
     // private
@@ -82,7 +101,7 @@ Yuhodo.Plan.MapPanel = Ext.extend(Ext.Panel, {
     /**
      * google.maps.Mapにcenterをセットする。 
      */
-    show: function() {
+    onShowMap: function() {
 
         var me = this,
             map = me.map;
@@ -112,6 +131,22 @@ Yuhodo.Plan.MapPanel = Ext.extend(Ext.Panel, {
      */
     setCenter: function(record) {
         this.center = record;
+    },
+
+    onShowSearchForm: function(btn, state) {
+
+        var me = this;
+
+        if (state) {
+            me.searchform.expand();
+        } else {
+            me.searchform.collapse();
+        }
+
+    },
+
+    onChangeToggle: function(panel) {
+        this.getTopToolbar().detailsearchbtn.toggle(panel.isVisible());
     }
 });
 
