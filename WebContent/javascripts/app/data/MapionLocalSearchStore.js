@@ -5,8 +5,8 @@ Yuhodo.data.MapionLocalSearchStore = Ext.extend(Ext.data.JsonStore, {
     constructor: function(cfg) {
         var me = this;
 
-        cfg = cfg ? cfg : {};
-        me.category = (cfg.category ? cfg.category : me.category) + '/';
+        cfg = cfg || {};
+        me.category = (cfg.category || me.category) + '/';
 
         // 設定適用
         Ext.apply(cfg, {
@@ -46,7 +46,7 @@ Yuhodo.data.MapionLocalSearchStore = Ext.extend(Ext.data.JsonStore, {
                 mapping: 'address'
             }]       
         });
-        
+
         // スーパークラスメソッドコール
         Yuhodo.data.MapionLocalSearchStore.superclass.constructor.call(me, cfg);
     }

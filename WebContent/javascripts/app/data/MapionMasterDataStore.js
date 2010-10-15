@@ -5,8 +5,8 @@ Yuhodo.data.MapionMasterDataStore = Ext.extend(Ext.data.JsonStore, {
     constructor: function(cfg) {
         var me = this;
 
-        cfg = cfg ? cfg : {};
-        me.category = (cfg.category ? cfg.category : me.category) + '/';
+        cfg = cfg || {};
+        me.category = (cfg.category || me.category) + '/';
 
         // 設定適用
         Ext.apply(cfg, {
