@@ -5,7 +5,7 @@ Yuhodo.Plan.SpotList = Ext.extend(Trick.grid.GridPanel, {
     
         // 設定適用
         Ext.apply(me, {
-            store: new Yuhodo.data.MapionLocalSearchStore({}),
+            store: new Yuhodo.data.MapionSearchStore({}),
             colModel: new Ext.grid.ColumnModel({
                 xcolumns: ['spotnamecolumn', 'addresscolumn', 'genrecolumn']
             })

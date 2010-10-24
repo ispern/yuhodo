@@ -22,13 +22,16 @@ Yuhodo.Plan.FormPanel = Ext.extend(Ext.Panel, {
                     items: [{
                         columnWidth: 0.3,
                         xtype: 't_form',
+                        ref: '../../leftform',
                         items: [{
                             fieldLabel: 'キーワード',
                             xtype: 'textfield',
+                            ref: 'keyword',
                             anchor: '90%'
                         },{
                             fieldLabel: '検索範囲(km)',
                             xtype: 'sliderfield',
+                            ref: 'radius',
                             value: 3,
                             minValue: 1,
                             maxValue: 20,
@@ -41,10 +44,11 @@ Yuhodo.Plan.FormPanel = Ext.extend(Ext.Panel, {
                     },{
                         columnWidth: 0.3,
                         xtype: 't_form',
+                        ref: '../../rightform',
                         items: [{
                            fieldLabel: 'ジャンル',
                            xtype: 'multiselect',
-                           ref: '../../../multiselect',
+                           ref: 'gnrselect',
                            height: 80,
                            width: 220,
                            store: new Yuhodo.data.MapionMasterDataStore({}),
@@ -55,7 +59,14 @@ Yuhodo.Plan.FormPanel = Ext.extend(Ext.Panel, {
                             xtype: 'button',
                             text: '検索',
                             width: 70,
-                            style: 'float: right; margin: 5px 7px 0 0;'
+                            style: 'float: right; margin: 5px 7px 0 0;',
+                            listeners: {
+                                search: function() {
+                                    console.log('search');
+                                    this.fireEvent('search');
+                                },
+                                scope: me
+                            }
                         }]
                     }]
                 }]
@@ -68,6 +79,8 @@ Yuhodo.Plan.FormPanel = Ext.extend(Ext.Panel, {
 
     initEvents: function() {
         var me = this;
+
+        me.addEvents('search');
     
         // スーパークラスメソッドコール
         Yuhodo.Plan.FormPanel.superclass.initEvents.call(me);
@@ -80,10 +93,20 @@ Yuhodo.Plan.FormPanel = Ext.extend(Ext.Panel, {
 
         var me = this;
 
-        me.multiselect.store.load({
-            params: {
-            }
-        });
+        // フォームフィールドのキャッシュ
+        me.forms = {
+            keyword: me.leftform.keyword,
+            radius: me.leftform.radius,
+            gnr: me.rightform.gnrselect
+        };
+        // me.gnrselect.store.load({
+            // params: {
+            // }
+        // });
+    },
+
+    getField: function(name) {
+        return this.forms[name];
     }
 });
 

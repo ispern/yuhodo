@@ -3,7 +3,7 @@ Ext.ns('Yuhodo', 'Yuhodo.data', 'Yuhodo.Top', 'Yuhodo.Plan', 'Yuhodo.util');
 
 // アプリケーションセットアップ
 Application.setup({
-    
+
     // History有効
     useHistory: true,
 

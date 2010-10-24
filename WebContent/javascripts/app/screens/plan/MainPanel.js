@@ -5,8 +5,6 @@ Yuhodo.Plan.MainPanel = Ext.extend(Ext.Panel, {
 
         var me = this;
 
-        me.store = new Yuhodo.data.MapionLocalSearchStore({});
-
         // 設定適用
         Ext.apply(me, {
             layout: 'border',
@@ -25,8 +23,7 @@ Yuhodo.Plan.MainPanel = Ext.extend(Ext.Panel, {
                     // スポット情報
                     xtype: 'yuhodo-plan-spotview',
                     id: 'spotview',
-                    ref: 'spotview',
-                    store : me.store
+                    ref: 'spotview'
                 },
 
                 // ツールバー

@@ -1,7 +1,7 @@
 Yuhodo.Plan.MapPanel = Ext.extend(Ext.Panel, {
 
     // Google Mapのズームレベル
-    ZOOM_LEVEL: 16,
+    ZOOM_LEVEL: 14,
 
     center: undefined,
 
@@ -54,6 +54,7 @@ Yuhodo.Plan.MapPanel = Ext.extend(Ext.Panel, {
                 listeners: {
                     collapse: me.onChangeSearchToggle,
                     expand: me.onChangeSearchToggle,
+                    search: me.onClickSearchButton,
                     scope: me
                 }
             },{
@@ -72,19 +73,17 @@ Yuhodo.Plan.MapPanel = Ext.extend(Ext.Panel, {
                 }),
 
                 // Google Mapの初期設定
-                mapconfig: {
+                mapConfig: {
 
                     // マップタイプ
                     gmapTypeId: 'map',
 
                     // ズームレベル
-                    zoomLevel: me.ZOOM_LEVEL,
+                    zoom: me.ZOOM_LEVEL,
 
-                    // 中心設定
-                    setCenter: {
-                        lat: 35.319031,
-                        lng: 139.550703
-                    }
+                    // 中心設定(デフォルトは東京駅)
+                    lat: 35.681382,
+                    lng: 139.766084
                 }
             },{
             
@@ -139,38 +138,41 @@ Yuhodo.Plan.MapPanel = Ext.extend(Ext.Panel, {
         google.maps.event.trigger(map.getMap(), 'resize');
 
         if (me.center) {
-            var center = me.center,
-                data = center.data;
-            map.setCenter(data.lat, data.lng, me.ZOOM_LEVEL);
-            map.createMarker(center, map.getConfig(center.id));
-
-            me.onAroundSearch();
+            me.onAroundSearch({
+                radius: '2000',
+                gnr: 'M06'
+            });
         }
-
-        // スポット情報にcenterのデータを追加
-        // me.spotlist.fireEvent('addrecord', me.center);
     },
 
     /**
      * 検索キーワードの周辺スポットを検索する。
      */
-    onAroundSearch: function() {
+    onAroundSearch: function(params) {
 
         var me = this,
             store = me.spotlist.getStore();
 
-        store.load({
-            params: {
+        if (typeof me.center == 'string') {
+            // キーワード検索の場合、Mapionワード検索APIを使う
+            store.setUrl('wordsearch', 'landmark');
+            Ext.apply(params, {
+                q: me.center,
+                geo: 1
+            });
+        } else {
+            // 中心情報の座標が指定されている場合、Mapionローカル検索APIを使う
+            store.setUrl('localsearch', 'landmark');
+            store.setCenter(me.center.get('address'), me.center.get('lat'), me.center.get('lng'));
 
-                // ジャンル:観光・温泉
-                gnr: 'M06',
-
-                // 緯度
+            Ext.apply(params, {
                 lat: me.center.data.lat,
-
-                // 経度
                 lon: me.center.data.lng
-            },
+            });
+        }
+
+        store.load({
+            params: params,
             callback: me.onAddMarker,
             scope: me
         });
@@ -188,11 +190,17 @@ Yuhodo.Plan.MapPanel = Ext.extend(Ext.Panel, {
             return false;
         }
 
+        // 中心位置の情報をrecordsに追加
+        var center = me.spotlist.getStore().getCenter();
+        map.setCenter(1*center.get('lat'), 1*center.get('lng'), me.ZOOM_LEVEL);
+
+        // マーカー追加
         Ext.each(records, function(item) {
             var cfg = map.getConfig(item.id);
             cfg.icon = 'images/hiking.png';
             map.createMarker(item, cfg);
         }, me);
+
         return true;
     },
 
@@ -223,10 +231,10 @@ Yuhodo.Plan.MapPanel = Ext.extend(Ext.Panel, {
     },
 
     /**
-     * Google Mapのcenterを設定する。
+     * 検索エリアの中心情報を設定する。
      */
-    setCenter: function(record) {
-        this.center = record;
+    setCenter: function(center) {
+        this.center = center;
     },
 
     /**
@@ -270,6 +278,17 @@ Yuhodo.Plan.MapPanel = Ext.extend(Ext.Panel, {
      */
     onChangeSpotListToggle: function(panel) {
         this.getTopToolbar().spotlistbtn.toggle(panel.isVisible());
+    },
+
+    onClickSearchButton: function() {
+
+        var me = this,
+            form = me.searchform;
+
+        me.onAroundSearch({
+            p: form.getField('keyword'),
+            radius: form.getField('radius')
+        });
     }
 });
 

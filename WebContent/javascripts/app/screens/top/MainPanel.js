@@ -149,11 +149,11 @@ Yuhodo.Top.MainPanel = Ext.extend(Ext.Panel, {
             displayField: 'address',
             valueField: 'id',
             loadingText: '検索中...',
-            selectOnFocus: true,
+            selectOnFocus: false,
             hiddenName: 'id',
             enableKeyEvents: true,
             hideTrigger: true,
-            tpl: new Ext.XTemplate('<tpl for="."><div class="search-item">', '住所:{address}', '</div></tpl>'),
+            tpl: new Ext.XTemplate('<tpl for="."><div class="search-item">', '{address}', '</div></tpl>'),
             itemSelector: 'div.search-item',
             minChars: 2,
             scope: me,
@@ -203,8 +203,10 @@ Yuhodo.Top.MainPanel = Ext.extend(Ext.Panel, {
 
         var me = this,
             combobox = me.forms.combobox;
+        
+        var hiddenValue = Ext.fly(combobox.getName()).dom.value;
 
-        return combobox.getStore().getById(Ext.get(combobox.getName()).dom.value);
+        return combobox.getStore().getById(hiddenValue) || hiddenValue;
     },
 
     /**

@@ -31,37 +31,37 @@ Ext.ux.google.map.Proxy = Ext.extend(Ext.data.DataProxy, function() {
                 geocoder = new G.geocoder(),
                 me = this;
 
-                geocoder.geocode({'address': params.query, region: 'jp'}, function(results, status) {
-                    var data = [];
-                    if (status == google.maps.GeocoderStatus.OK) {
+            geocoder.geocode({'address': params.query, region: 'jp'}, function(results, status) {
+                var data = [];
+                if (status == google.maps.GeocoderStatus.OK || status == google.maps.GeocoderStatus.ZERO_RESULTS) {
+                    if (!params.query.match(/[\s　]/)) {
                         Ext.each(results, function(item, num) {
                            data.push({
                                id: Ext.id({}, 'address-'),
-                               address: item.formatted_address,
+                               address: item.formatted_address.replace('日本, ', ''),
                                lat: item.geometry.location.lat(),
                                lng: item.geometry.location.lng()
                            });
                         });
-                        var response = {
-                            total: data.length,
-                            data: data
-                        };
-                        try {
-                           var result = reader.readRecords(response);
-                           me.fireEvent('load', me, arg);
-                        } catch (e) {
-                          me.fireEvent('loadexception', me, arg, e);
-                          return callback.call(scope || me, null, arg, false);
-                        }
-                    } else if (status != google.maps.GeocoderStatus.ZERO_RESULTS) {
-                        me.fireEvent('loadexception', me, arg);
-                        return callback.call(scope || me, null, arg, false);
                     }
+                    var response = {
+                        total: data.length,
+                        data: data
+                    };
+                    try {
+                       var result = reader.readRecords(response);
+                       me.fireEvent('load', me, arg);
+                    } catch (e) {
+                      me.fireEvent('loadexception', me, arg, e);
+                      callback.call(scope || me, null, arg, false);
+                    }
+                } else if (status != google.maps.GeocoderStatus.ZERO_RESULTS) {
+                    me.fireEvent('loadexception', me, arg);
+                    callback.call(scope || me, null, arg, false);
+                }
 
-                    callback.call(scope || me, result, arg, true);
-
-                    return data.length;
-                });
+                callback.call(scope || me, result, arg, true);
+            });
         },
 
         // private
