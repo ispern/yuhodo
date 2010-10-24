@@ -206,7 +206,7 @@ Yuhodo.Top.MainPanel = Ext.extend(Ext.Panel, {
         
         var hiddenValue = Ext.fly(combobox.getName()).dom.value;
 
-        return combobox.getStore().getById(hiddenValue) || hiddenValue;
+        return combobox.getStore().getById(hiddenValue) || combobox.getEl().dom.value;
     },
 
     /**

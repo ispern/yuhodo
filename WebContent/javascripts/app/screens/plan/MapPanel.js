@@ -137,6 +137,7 @@ Yuhodo.Plan.MapPanel = Ext.extend(Ext.Panel, {
         // Mapsのリサイズイベント発火
         google.maps.event.trigger(map.getMap(), 'resize');
 
+        console.log(me.center);
         if (me.center) {
             me.onAroundSearch({
                 radius: '2000',
@@ -152,6 +153,9 @@ Yuhodo.Plan.MapPanel = Ext.extend(Ext.Panel, {
 
         var me = this,
             store = me.spotlist.getStore();
+
+        // マーカーを全てクリア
+        me.map.clearMarkers();
 
         if (typeof me.center == 'string') {
             // キーワード検索の場合、Mapionワード検索APIを使う
