@@ -27,6 +27,7 @@ Yuhodo.Plan.FormPanel = Ext.extend(Ext.Panel, {
                             fieldLabel: 'キーワード',
                             xtype: 'yuhodo-form-geosuggestion',
                             ref: 'keyword',
+                            allowBlank: false,
                             anchor: '90%'
                         },{
                             fieldLabel: '検索範囲(km)',
@@ -61,13 +62,10 @@ Yuhodo.Plan.FormPanel = Ext.extend(Ext.Panel, {
                             text: '検索',
                             width: 70,
                             style: 'float: right; margin: 5px 7px 0 0;',
-                            listeners: {
-                                search: function() {
-                                    console.log('search');
-                                    this.fireEvent('search');
-                                },
-                                scope: me
-                            }
+                            handler: function() {
+                                me.fireEvent('search');
+                            },
+                            scope: me
                         }]
                     }]
                 }]
@@ -82,7 +80,7 @@ Yuhodo.Plan.FormPanel = Ext.extend(Ext.Panel, {
         var me = this;
 
         me.addEvents('search');
-    
+
         // スーパークラスメソッドコール
         Yuhodo.Plan.FormPanel.superclass.initEvents.call(me);
     
@@ -104,10 +102,26 @@ Yuhodo.Plan.FormPanel = Ext.extend(Ext.Panel, {
             params: {
             },
             callback: function() {
-                me.forms.gnr.view.refresh();
+                me.forms.gnr.setValue(me.defaultValue.gnr);
             },
             scope: me
         });
+    },
+
+    getValue: function() {
+        var me = this,
+            forms = me.forms,
+            hiddenValue = Ext.fly(forms.keyword.getName()).dom.value;
+
+        return {
+            keyword: forms.keyword.getStore().getById(hiddenValue) || forms.keyword.getEl().dom.value,
+            radius: forms.radius.getValue() * 1000,
+            gnr: forms.gnr.getValue()
+        };
+    },
+
+    isValid: function() {
+        return this.leftform.getForm().isValid() || this.rightform.getForm().isValid();
     },
 
     getField: function(name) {

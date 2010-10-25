@@ -5,6 +5,9 @@ Yuhodo.Plan.MapPanel = Ext.extend(Ext.Panel, {
 
     center: undefined,
 
+    // デフォルトの検索対象ジャンル
+    gnr_value: 'M06',
+
     // private
     initComponent: function() {
 
@@ -51,6 +54,9 @@ Yuhodo.Plan.MapPanel = Ext.extend(Ext.Panel, {
                 collapsed: true,
                 split: true,
                 collapseMode: 'mini',
+                defaultValue: {
+                    gnr: me.gnr_value
+                },
                 listeners: {
                     collapse: me.onChangeSearchToggle,
                     expand: me.onChangeSearchToggle,
@@ -117,6 +123,7 @@ Yuhodo.Plan.MapPanel = Ext.extend(Ext.Panel, {
         // レンダリング後のイベント定義
         me.on('afterrender', me.onAfterRender, me);
         me.on('show', me.onShowMap, me);
+        me.searchform.on('search', me.onSearch, me);
     },
 
     // private
@@ -145,7 +152,7 @@ Yuhodo.Plan.MapPanel = Ext.extend(Ext.Panel, {
             me.loadMask.show();
             me.onAroundSearch({
                 radius: '2000',
-                gnr: 'M06'
+                gnr: me.gnr_value
             });
         }
     },
@@ -231,6 +238,27 @@ Yuhodo.Plan.MapPanel = Ext.extend(Ext.Panel, {
         map.openInfoWindow(marker);
 
         me.spotpanel.getTopToolbar().addroot.setDisabled(false);
+    },
+
+    onSearch: function() {
+
+        var me = this,
+            form = me.searchform;   
+
+        if (!form.isValid()) {
+            return false;
+        }
+
+        me.loadMask.show();
+
+        var values = form.getValue();
+
+        me.center = values.keyword;
+        me.onAroundSearch({
+            radius: values.radius,
+            gnr: values.gnr
+        });       
+        return true;
     },
 
     /**
