@@ -124,6 +124,10 @@ Yuhodo.Plan.MapPanel = Ext.extend(Ext.Panel, {
 
         var me = this;
 
+        // ローディングマスクの設定
+        me.loadMask = new Ext.LoadMask(me.body, {
+            msg: '情報取得中...'
+        });
     },
 
     /**
@@ -137,8 +141,8 @@ Yuhodo.Plan.MapPanel = Ext.extend(Ext.Panel, {
         // Mapsのリサイズイベント発火
         google.maps.event.trigger(map.getMap(), 'resize');
 
-        console.log(me.center);
         if (me.center) {
+            me.loadMask.show();
             me.onAroundSearch({
                 radius: '2000',
                 gnr: 'M06'
@@ -204,6 +208,8 @@ Yuhodo.Plan.MapPanel = Ext.extend(Ext.Panel, {
             cfg.icon = 'images/hiking.png';
             map.createMarker(item, cfg);
         }, me);
+
+        me.loadMask.hide();
 
         return true;
     },
