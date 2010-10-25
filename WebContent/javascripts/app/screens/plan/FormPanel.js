@@ -51,7 +51,8 @@ Yuhodo.Plan.FormPanel = Ext.extend(Ext.Panel, {
                            ref: 'gnrselect',
                            height: 80,
                            width: 220,
-                           store: new Yuhodo.data.MapionMasterDataStore({}),
+                           store: new Yuhodo.data.MapionMasterDataStore({
+                           }),
                            displayField: 'name',
                            valueField: 'code',
                            hiddenName: 'code'
@@ -99,10 +100,14 @@ Yuhodo.Plan.FormPanel = Ext.extend(Ext.Panel, {
             radius: me.leftform.radius,
             gnr: me.rightform.gnrselect
         };
-        // me.gnrselect.store.load({
-            // params: {
-            // }
-        // });
+        me.forms.gnr.store.load({
+            params: {
+            },
+            callback: function() {
+                me.forms.gnr.view.refresh();
+            },
+            scope: me
+        });
     },
 
     getField: function(name) {
