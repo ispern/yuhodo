@@ -133,30 +133,11 @@ Yuhodo.Top.MainPanel = Ext.extend(Ext.Panel, {
             searchbuttonContainer = Ext.get(form.child('.' + me.searchbutton));
 
         // 検索コンボボックス生成
-        me.forms.combobox = new Ext.form.ComboBox({
+        me.forms.combobox = new Yuhodo.form.GeocodeSuggestion({
             tabIndex: 1,
             allowBlank: true,
             width: 500,
             height: 40,
-            store: new Ext.data.JsonStore({
-                proxy: new Ext.ux.google.map.Proxy({}),
-                root: 'data',
-                idProperty: 'id',
-                fields: ['id', 'address', 'lat', 'lng']
-            }),
-            triggerAction: 'all',
-            mode: 'remote',
-            displayField: 'address',
-            valueField: 'id',
-            loadingText: '検索中...',
-            selectOnFocus: false,
-            hiddenName: 'id',
-            enableKeyEvents: true,
-            hideTrigger: true,
-            tpl: new Ext.XTemplate('<tpl for="."><div class="search-item">', '{address}', '</div></tpl>'),
-            itemSelector: 'div.search-item',
-            minChars: 2,
-            scope: me,
             listeners: {
                 keydown: me.onKeyDown,
                 scope: me

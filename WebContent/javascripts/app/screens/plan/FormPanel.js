@@ -25,7 +25,7 @@ Yuhodo.Plan.FormPanel = Ext.extend(Ext.Panel, {
                         ref: '../../leftform',
                         items: [{
                             fieldLabel: 'キーワード',
-                            xtype: 'textfield',
+                            xtype: 'yuhodo-form-geosuggestion',
                             ref: 'keyword',
                             anchor: '90%'
                         },{

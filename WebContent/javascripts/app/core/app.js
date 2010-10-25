@@ -1,5 +1,5 @@
 // ネームスペース
-Ext.ns('Yuhodo', 'Yuhodo.data', 'Yuhodo.Top', 'Yuhodo.Plan', 'Yuhodo.util');
+Ext.ns('Yuhodo', 'Yuhodo.data', 'Yuhodo.Top', 'Yuhodo.Plan', 'Yuhodo.util', 'Yuhodo.form');
 
 // アプリケーションセットアップ
 Application.setup({
