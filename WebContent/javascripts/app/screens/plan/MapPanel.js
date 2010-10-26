@@ -104,6 +104,7 @@ Yuhodo.Plan.MapPanel = Ext.extend(Ext.Panel, {
                 listeners: {
                     collapse: me.onChangeSpotListToggle,
                     expand: me.onChangeSpotListToggle,
+                    select: me.onSelect,
                     scope: me
                 }
             }]
@@ -111,6 +112,10 @@ Yuhodo.Plan.MapPanel = Ext.extend(Ext.Panel, {
         
         // スーパークラスメソッドコール
         Yuhodo.Plan.MapPanel.superclass.initComponent.call(me);
+    },
+
+    onSelect: function() {
+        console.log('select');
     },
 
     // private
@@ -123,7 +128,6 @@ Yuhodo.Plan.MapPanel = Ext.extend(Ext.Panel, {
         // レンダリング後のイベント定義
         me.on('afterrender', me.onAfterRender, me);
         me.on('show', me.onShowMap, me);
-        me.searchform.on('search', me.onSearch, me);
     },
 
     // private
@@ -240,7 +244,7 @@ Yuhodo.Plan.MapPanel = Ext.extend(Ext.Panel, {
         me.spotpanel.getTopToolbar().addroot.setDisabled(false);
     },
 
-    onSearch: function() {
+    onClickSearchButton: function() {
 
         var me = this,
             form = me.searchform;   
@@ -316,17 +320,6 @@ Yuhodo.Plan.MapPanel = Ext.extend(Ext.Panel, {
      */
     onChangeSpotListToggle: function(panel) {
         this.getTopToolbar().spotlistbtn.toggle(panel.isVisible());
-    },
-
-    onClickSearchButton: function() {
-
-        var me = this,
-            form = me.searchform;
-
-        me.onAroundSearch({
-            p: form.getField('keyword'),
-            radius: form.getField('radius')
-        });
     }
 });
 

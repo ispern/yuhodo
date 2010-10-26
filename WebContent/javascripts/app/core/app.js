@@ -1,14 +1,23 @@
 // ネームスペース
-Ext.ns('Yuhodo', 'Yuhodo.data', 'Yuhodo.Top', 'Yuhodo.Plan', 'Yuhodo.util', 'Yuhodo.form');
+Ext.ns('Yuhodo', 'Yuhodo.app', 'Yuhodo.data', 'Yuhodo.Top', 'Yuhodo.Plan', 'Yuhodo.util', 'Yuhodo.form');
+Yuhodo.app = {
 
-// アプリケーションセットアップ
-Application.setup({
+    url: {
 
-    // History有効
-    useHistory: true,
+        /**
+         * Yahoo ローカルサーチAPI
+         */
+        YahooLocalSearch: 'http://map.yahooapis.jp/LocalSearchService/V1/LocalSearch?appid=WHrlBmSxg65INUqUaY90kDYiX7l65uR_gchCYcpqp49UJdVxBcaTCfjzlaxLAQzqbUtyXg--',
 
-    // 初期設定
-    onReady: function() {
+        /**
+         * Mapion ローカルサーチAPI
+         */
+        MapionLocalSearch: 'http://searchapi-stg.mapion.co.jp/search/ver1/localsearch/'
+    
+    
+    },
+
+    boot: function() {
 
         var me = this;
         
@@ -54,24 +63,6 @@ Application.setup({
         Yuhodo.app.directLink();
 
         lm.remove();
-    }
-});
-
-Yuhodo.app = {
-
-    url: {
-
-        /**
-         * Yahoo ローカルサーチAPI
-         */
-        YahooLocalSearch: 'http://map.yahooapis.jp/LocalSearchService/V1/LocalSearch?appid=WHrlBmSxg65INUqUaY90kDYiX7l65uR_gchCYcpqp49UJdVxBcaTCfjzlaxLAQzqbUtyXg--',
-
-        /**
-         * Mapion ローカルサーチAPI
-         */
-        MapionLocalSearch: 'http://searchapi-stg.mapion.co.jp/search/ver1/localsearch/'
-    
-    
     },
 
     directLink: function() {
@@ -104,3 +95,12 @@ Yuhodo.app = {
     }
 };
 
+// アプリケーションセットアップ
+Application.setup({
+
+    // History有効
+    useHistory: true,
+
+    // 初期設定
+    onReady: Yuhodo.app.boot
+});

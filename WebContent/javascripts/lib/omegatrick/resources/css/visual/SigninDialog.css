@@ -1,0 +1,73 @@
+/* vim: set expandtab tabstop=2 shiftwidth=2 softtabstop=2: */
+
+/**
+ * Omega Trick Library 0.5.0
+ * Copyright(c) 2006-2010 Xenophy.CO.,LTD All rights Reserved.
+ * http://omegatrick.com
+ * http://www.gnu.org/licenses/gpl-3.0.html
+ */
+
+/* ------------------------------
+ ダイアログ
+------------------------------ */
+.tx-signin-body {
+  border: 1px solid #989da5;
+  background: #f9f9f9;
+}
+
+/* ------------------------------
+ ヘッダー
+------------------------------ */
+.tx-signin-header {
+  background-color: #989da5;
+}
+
+.tx-signin-header .title {
+  color: #fff;
+}
+
+/* ------------------------------
+ アイテム
+------------------------------ */
+.tx-signin-items {
+  border: 1px solid #e7e7e7;
+}
+
+.tx-signin-items-inner {
+  border: 1px solid #fff;
+  background: #f9f9f9;
+}
+
+/* ------------------------------
+ フォーム
+------------------------------ */
+.tx-signin-content .form th {
+  font-weight: bold;
+}
+
+.tx-signin-content .form td.msg span {
+  display: none;
+  color: #d8000c;
+  font-weight: bold;
+}
+
+/* ------------------------------
+ パスワード紛失
+------------------------------ */
+.tx-signin .forget a {
+  background-image: url(../../images/SigninDialog/icon_arrow_right.gif);
+  background-repeat: no-repeat;
+  background-position: 0 5px;
+  padding-left: 6px;
+  color:#3366CC;
+  font-weight: bold;
+  text-decoration:none;
+}
+
+/*
+ * Local variables:
+ * tab-width: 2
+ * c-basic-offset: 2
+ * c-hanging-comment-ender-p: nil
+ * End:
+ */

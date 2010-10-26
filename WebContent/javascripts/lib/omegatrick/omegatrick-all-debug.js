@@ -27,7 +27,7 @@ Trick = {};
     var isOmegaTrick = true;
 
     // SenchaTouch有効フラグ
-    var isSenchaTouch = Ext.TouchEventManager ? true : false;
+    var isSenchaTouch = Ext.getOrientation ? true : false;
 
     // Ext Core有効フラグ
     var isExtCore = (!isSenchaTouch && !Ext.ComponentMgr) ? true : false;
@@ -871,7 +871,7 @@ Trick.app.App = function() {
             };
 
             // Ext.History初期化
-            if(me.useHistory) {
+            if(me.useHistory && Trick.isExtJS) {
 
                 // Ext.History用タグ生成
                 Ext.DomHelper.append(Ext.getBody(), {
@@ -1205,8 +1205,12 @@ Trick.app.AccountMgr = function(){
          */
         setInfo : function(o) {
 
+            var me = this;
+
             _info = o;
 
+            // イベント発火
+            me.fireEvent('updateinfo', _info);
         },
 
         // }}}
