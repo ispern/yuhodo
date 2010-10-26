@@ -31,8 +31,9 @@ Yuhodo.Plan.MainPanel = Ext.extend(Ext.Panel, {
                     items: [{
                         ref: 'addroot',
                         xtype: 'button',
-                        text: 'ルートに追加',
-                        disabled: true
+                        text: 'ルート計算',
+                        handler: me.calcRoute,
+                        scope: me
                     }]
                 })
             },{
@@ -80,6 +81,29 @@ Yuhodo.Plan.MainPanel = Ext.extend(Ext.Panel, {
         // MapPanelのshowイベント発火
         me.mappanel.fireEvent('show');
 
+    },
+
+    calcRoute: function() {
+
+        var me = this,
+            store = me.spotpanel.spotview.getStore(),
+            map = me.mappanel.map;
+
+        if (store.getCount() > 1) {
+            store.each(function(record, index, length) {
+                var latlng = new google.maps.LatLng(1*record.get('lat'), 1*record.get('lng'));
+                if (index === 0) {
+                    map.setOrigin(latlng);
+                } else if (index+1 === length) {
+                    map.setDestination(latlng);
+                } else {
+                    map.addWayPoint({
+                        location: latlng
+                    });
+                }
+            });
+            map.calcRoute();
+        }
     }
 });
 

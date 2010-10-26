@@ -84,6 +84,7 @@ Yuhodo.Plan.SpotView = Ext.extend(Ext.DataView, {
 
         me.store.add(record);
     }
+
 });
 
 Ext.reg('yuhodo-plan-spotview', Yuhodo.Plan.SpotView);
