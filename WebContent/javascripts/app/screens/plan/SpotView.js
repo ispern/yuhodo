@@ -21,9 +21,35 @@ Yuhodo.Plan.SpotView = Ext.extend(Ext.DataView, {
         // 設定適用
         Ext.apply(me, {
             itemSelector: 'div.item',
-            multiSelect: true,
             overClass: 'item-over',
-            autoScroll: true
+            autoScroll: true,
+            store: new Ext.data.Store({
+                fields: [{
+                    // 緯度
+                    name: 'lat',
+                    mapping: 'lat'
+                },{
+                    // 経度
+                    name: 'lng',
+                    mapping: 'lon'
+                },{
+                    // ジャンル2の名前
+                    name: 'gnr2_name',
+                    mapping: 'gnr2_name'
+                },{
+                    // 地名
+                    name: 'title',
+                    mapping: 'poi_name'
+                },{
+                    // 郵便番号
+                    name: 'zip',
+                    mapping: 'zip'
+                },{
+                    // 住所
+                    name: 'address',
+                    mapping: 'address'
+                }]
+            })
         });
 
         // スーパークラスメソッドコール
@@ -33,16 +59,30 @@ Yuhodo.Plan.SpotView = Ext.extend(Ext.DataView, {
     // private
     initEvents: function() {
         var me = this;
+
+        // イベント定義
+        me.addEvents('addroute');
     
-        // スーパークラスメソッドコール
-        Yuhodo.Plan.SpotView.superclass.initEvents.call(me);
+        // イベントリスナー登録
+        me.on('addroute', me.onAddRoute, me);
     
-        // レンダリング後のイベント定義
-        me.on('afterrender', me.onAfterRender, me);
     },
 
     // private
-    onAfterRender: function() {
+    afterRender: function() {
+
+        var me = this;
+
+        Yuhodo.Plan.SpotView.superclass.afterRender.call(me);
+
+        me.initEvents();
+    },
+
+    onAddRoute: function(record) {
+
+        var me = this;
+
+        me.store.add(record);
     }
 });
 

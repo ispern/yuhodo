@@ -104,7 +104,6 @@ Yuhodo.Plan.MapPanel = Ext.extend(Ext.Panel, {
                 listeners: {
                     collapse: me.onChangeSpotListToggle,
                     expand: me.onChangeSpotListToggle,
-                    select: me.onSelect,
                     scope: me
                 }
             }]
@@ -112,10 +111,6 @@ Yuhodo.Plan.MapPanel = Ext.extend(Ext.Panel, {
         
         // スーパークラスメソッドコール
         Yuhodo.Plan.MapPanel.superclass.initComponent.call(me);
-    },
-
-    onSelect: function() {
-        console.log('select');
     },
 
     // private

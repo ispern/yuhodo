@@ -1,18 +1,29 @@
-Yuhodo.Plan.AddRouteColumn = Ext.extend(Trick.grid.Column, {
+Yuhodo.Plan.AddRouteColumn = Ext.extend(Ext.grid.ActionColumn, {
 
-    header: '',
+    constructor: function(cfg){
 
-    width: 50,
+        var me = this;
 
-    xtype: 'actionculumn',
+        Ext.iterate(cfg, function(name) {
+            if(me[name]) {
+                cfg[name] = me[name];
+            }
+        });
 
-    items: [{
-        handler: function(grid, rowIndex, colIndex) {
-            console.log('action click');
-            console.log(arguments);
-        }
-    }]
+        Ext.apply(cfg, {
+            width: 18,
+            items: [{
+                iconCls: 'y-icon-add-route',
+                handler: function(grid, rowIndex, colIndex) {
+                    var obj = grid.getStore().getAt(rowIndex);
+                    grid.fireEvent('addroute', obj);
+                }
+            }]
+        });
 
+        Yuhodo.Plan.AddRouteColumn.superclass.constructor.call(me, cfg);
+
+    }
 });
 
 Ext.grid.Column.types['addroutecolumn'] = Yuhodo.Plan.AddRouteColumn;

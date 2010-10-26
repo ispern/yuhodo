@@ -56,6 +56,8 @@ Yuhodo.Plan.MainPanel = Ext.extend(Ext.Panel, {
 
         me.on('aroundsearch', me.onAroundSearch, me);
 
+        me.spotpanel.spotview.relayEvents(me.mappanel.spotlist, ['addroute']);
+
         // スーパークラスメソッドコール
         Yuhodo.Plan.MainPanel.superclass.initEvents.call(me);
 

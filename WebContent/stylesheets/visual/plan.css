@@ -26,3 +26,9 @@
 .y-icon-search {
     background-image: url(../../images/search-icon.png) !important;
 }
+
+.y-icon-add-route {
+    width: 16px;
+    height: 16px;
+    background-image: url(../../javascripts/lib/extjs/resources/images/default/tree/drop-add.gif) !important;
+}
