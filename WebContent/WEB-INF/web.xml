@@ -26,6 +26,10 @@
         <filter-name>FrontController</filter-name>
         <filter-class>org.slim3.controller.FrontController</filter-class>
     </filter>
+    <filter>
+        <filter-name>ExtDirectFilter</filter-name>
+        <filter-class>org.yuhodo.cool.filter.ExtDirectFilter</filter-class>
+    </filter>
 
     <filter-mapping>
         <filter-name>HotReloadingFilter</filter-name>
@@ -39,6 +43,14 @@
     </filter-mapping>
     <filter-mapping>
         <filter-name>FrontController</filter-name>
+        <url-pattern>/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+        <dispatcher>ERROR</dispatcher>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>ExtDirectFilter</filter-name>
         <url-pattern>/*</url-pattern>
         <dispatcher>REQUEST</dispatcher>
         <dispatcher>FORWARD</dispatcher>
