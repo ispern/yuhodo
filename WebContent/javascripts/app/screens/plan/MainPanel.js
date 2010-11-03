@@ -10,7 +10,7 @@ Yuhodo.Plan.MainPanel = Ext.extend(Ext.Panel, {
             layout: 'border',
             border: false,
             items: [{
-                region: 'west',
+                region: 'east',
                 id: 'spotpanel',
                 ref: 'spotpanel',
                 title: 'ルート情報',
@@ -18,6 +18,7 @@ Yuhodo.Plan.MainPanel = Ext.extend(Ext.Panel, {
                 width: 300,
                 split: true,
                 layout: 'fit',
+                collapsed: true,
                 items: {
 
                     // スポット情報
