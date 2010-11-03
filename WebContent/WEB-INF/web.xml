@@ -51,7 +51,7 @@
     </filter-mapping>
     <filter-mapping>
         <filter-name>ExtDirectFilter</filter-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/direct</url-pattern>
         <dispatcher>REQUEST</dispatcher>
         <dispatcher>FORWARD</dispatcher>
         <dispatcher>INCLUDE</dispatcher>
