@@ -111,7 +111,7 @@ Yuhodo.Plan.FormPanel = Ext.extend(Ext.Panel, {
     getValue: function() {
         var me = this,
             forms = me.forms,
-            hiddenValue = Ext.fly(forms.keyword.geId()).dom.value;
+            hiddenValue = Ext.fly(forms.keyword.getId()).dom.value;
 
         return {
             keyword: forms.keyword.getStore().getById(hiddenValue) || forms.keyword.getEl().dom.value,
