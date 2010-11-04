@@ -10,17 +10,8 @@ Yuhodo.data.MapionMasterDataStore = Ext.extend(Ext.data.JsonStore, {
 
         // 設定適用
         Ext.apply(cfg, {
-            proxy: new Ext.data.ScriptTagProxy({
-                url: 'http://searchapi-stg.mapion.co.jp/search/ver1/master/' + me.category,
-                nocache: false
-            }),
-            baseParams: {
-                key: 'MA6',
-                ot: 'jsonp',
-                rows: '1000',
-                level: '1'
-            },
-            root: 'ResultList',
+            proxy: new Ext.data.MemoryProxy(Yuhodo.data.MapionMasterData),
+            root: 'parent',
             fields: [{
                 // コード
                 name: 'code',

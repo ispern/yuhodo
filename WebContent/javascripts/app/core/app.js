@@ -26,6 +26,7 @@ Yuhodo.app = {
 
         var lm = Application.LoadingMask;
 
+        Ext.QuickTips.init();
         // 画面描画
         var vp = new Trick.app.Viewport({
 

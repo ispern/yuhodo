@@ -40,6 +40,7 @@ Yuhodo.Plan.MapPanel = Ext.extend(Ext.Panel, {
                     ref: 'spotlistbtn',
                     iconCls: 'y-icon-search',
                     enableToggle: true,
+                    pressed: true,
                     toggleHandler: me.onShowSpotList,
                     scope: me
                 }]
@@ -50,7 +51,7 @@ Yuhodo.Plan.MapPanel = Ext.extend(Ext.Panel, {
                 xtype: 'yuhodo-plan-formpanel',
                 region: 'north',
                 ref: 'searchform',
-                height: 150,
+                height: 200,
                 collapsed: true,
                 split: true,
                 collapseMode: 'mini',
@@ -250,10 +251,12 @@ Yuhodo.Plan.MapPanel = Ext.extend(Ext.Panel, {
         var marker = map.getMarkerById(record.id);
 
         if (marker) {
+            // zindexを変更する
             map.closeInfoWindow();
 
             // InfoWindowを表示
             map.openInfoWindow(marker);
+
         }
     },
 

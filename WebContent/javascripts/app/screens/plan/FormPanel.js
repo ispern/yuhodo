@@ -1,73 +1,104 @@
-Ext.QuickTips.init();
-Yuhodo.Plan.FormPanel = Ext.extend(Ext.Panel, {
+Yuhodo.Plan.FormPanel = Ext.extend(Trick.form.FormPanel, {
     
     initComponent: function() {
-        var me = this;
+        var me = this,
+            checkboxs = [],
+            data = Yuhodo.data.MapionMasterData.parent;
+    
+        Ext.each(data, function(item) {
+            checkboxs.push({
+                boxLabel: item.name,
+                name: item.code,
+                checked: (item.code == 'M06')
+            });
+        });
     
         // 設定適用
         Ext.apply(me, {
 
             border: false,
 
-            padding: 10,
+            layout: 'vbox',
+
+            padding: 3,
+
+            layoutConfig: {
+                pack: 'start',
+                align: 'left'
+            },
 
             items: [{
                 xtype: 'container',
-                items: [{
-                    xtype: 'container',
-                    layout: 'column',
+                layout: 'hbox',
+                layoutConfig: {
+                    pack: 'start',
+                    aplign: 'middle'
+                },
+                flex: 0.7,
+                width: 900,
+                defaults: {
+                    xtype: 'fieldset',
+                    labelWidth: 80,
+                    border: false,
+                    width: 450,
+                    height: 60,
                     defaults: {
-                        border: false
-                    },
+                        width: 330,
+                        msgTarget: 'under'
+                    }
+                },
+                items: [{
                     items: [{
-                        columnWidth: 0.3,
-                        xtype: 't_form',
-                        ref: '../../leftform',
-                        items: [{
-                            fieldLabel: 'キーワード',
-                            xtype: 'yuhodo-form-geosuggestion',
-                            ref: 'keyword',
-                            allowBlank: false,
-                            anchor: '90%'
-                        },{
-                            fieldLabel: '検索範囲(km)',
-                            xtype: 'sliderfield',
-                            ref: 'radius',
-                            value: 3,
-                            minValue: 1,
-                            maxValue: 20,
-                            increment: 1,
-                            anchor: '90%',
-                            tipText: function(thumb) {
-                                return String(thumb.value) + 'km';
-                            }
-                        }]
-                    },{
-                        columnWidth: 0.3,
-                        xtype: 't_form',
-                        ref: '../../rightform',
-                        items: [{
-                           fieldLabel: 'ジャンル',
-                           xtype: 'multiselect',
-                           ref: 'gnrselect',
-                           height: 80,
-                           width: 220,
-                           store: new Yuhodo.data.MapionMasterDataStore({
-                           }),
-                           displayField: 'name',
-                           valueField: 'code',
-                           hiddenName: 'code'
-                        },{
-                            xtype: 'button',
-                            text: '検索',
-                            width: 70,
-                            style: 'float: right; margin: 5px 7px 0 0;',
-                            handler: function() {
-                                me.fireEvent('search');
-                            },
-                            scope: me
-                        }]
+                        fieldLabel: 'キーワード',
+                        hiddenName: 'keyword',
+                        xtype: 'yuhodo-form-geosuggestion',
+                        tabindex: 1,
+                        allowBlank: false
                     }]
+                },{
+                    items: [{
+                        fieldLabel: '検索範囲(km)',
+                        xtype: 'sliderfield',
+                        name: 'radius',
+                        minValue: 1,
+                        maxValue: 20,
+                        increment: 1,
+                        tipText: function(thumb) {
+                            return String(thumb.value) + 'km';
+                        }      
+                    }]
+                }]
+            },{
+                xtype: 'fieldset',
+                width: 900,
+                flex: 1.3,
+                labelWidth: 1,
+                border: true,
+                title: 'ジャンル',
+                name: 'name',
+                items: [{
+                    xtype: 'checkboxgroup',
+                    columns: 5,
+                    autoWidth: true,
+                    tabindex: 3,
+                    name: 'gnrs',
+                    allowBlank: false,
+                    msgTarget: 'under',
+                    items: checkboxs
+                }]
+            },{
+                xtype: 'container',
+                flex: 0.6,
+                width: 900,
+                items: [{
+                    xtype: 'button',
+                    text: '検索',
+                    width: 70,
+                    style: 'float: right; margin: 5px 7px 0 0;',
+                    handler: function() {
+                        me.fireEvent('search');
+                    },
+                    scope: me
                 }]
             }]
         });
@@ -90,38 +121,36 @@ Yuhodo.Plan.FormPanel = Ext.extend(Ext.Panel, {
 
     onAfterRender: function() {
 
-        var me = this;
+        var me = this,
+            form = me.getForm();
 
         // フォームフィールドのキャッシュ
         me.forms = {
-            keyword: me.leftform.keyword,
-            radius: me.leftform.radius,
-            gnr: me.rightform.gnrselect
+            keyword: form.findField('keyword'),
+            radius: form.findField('radius'),
+            gnr: form.findField('gnrs')
         };
-        me.forms.gnr.store.load({
-            params: {
-            },
-            callback: function() {
-                me.forms.gnr.setValue(me.defaultValue.gnr);
-            },
-            scope: me
-        });
     },
 
     getValue: function() {
         var me = this,
             forms = me.forms,
-            hiddenValue = Ext.fly(forms.keyword.getId()).dom.value;
+            hiddenValue = Ext.fly(forms.keyword.getId()).dom.value,
+            gnrs = forms.gnr.getValue();
 
+        var gnrData = [];
+        Ext.each(gnrs, function(gnr) {
+            gnrData.push(gnr.getName());
+        });
         return {
             keyword: forms.keyword.getStore().getById(hiddenValue) || forms.keyword.getEl().dom.value,
             radius: forms.radius.getValue() * 1000,
-            gnr: forms.gnr.getValue()
+            gnr: gnrData.join(',')
         };
     },
 
     isValid: function() {
-        return this.leftform.getForm().isValid() && this.rightform.getForm().isValid();
+        return this.getForm().isValid();
     },
 
     getField: function(name) {
