@@ -206,7 +206,8 @@ Yuhodo.Plan.MapPanel = Ext.extend(Ext.Panel, {
     onAddMarker: function(records, option, result) {
 
         var me = this,
-            map = me.map;
+            map = me.map,
+            store = me.spotlist.getStore();
 
         if (!result) {
             return false;
@@ -219,6 +220,13 @@ Yuhodo.Plan.MapPanel = Ext.extend(Ext.Panel, {
         var data = Yuhodo.data.MapionMasterData.children;
         // マーカー追加
         Ext.each(records, function(item) {
+
+            if (item.get('zip').trim() === '') {
+                // 郵便番号が存在しない場合、Storeからレコードを削除
+                store.remove(item);
+                return;
+            }
+
             var cfg = map.getConfig(item.id),
                 gnrData = data[item.get('gnr1_code')].children[item.get('gnr2_code')];
 
