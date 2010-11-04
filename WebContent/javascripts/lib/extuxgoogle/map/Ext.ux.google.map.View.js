@@ -616,7 +616,9 @@ Ext.ux.google.map.View = Ext.extend(Ext.DataView, function () {
             if (this.markers) {
                 this.markers.each(function (item, idx, num) {
                     G.event.clearInstanceListeners(item);
-                    item.infowindow.close();
+                    if (item.infowindow) {
+                        item.infowindow.close();
+                    }
                     item.setVisible(false);
                     item.setMap();
                 }, this);
