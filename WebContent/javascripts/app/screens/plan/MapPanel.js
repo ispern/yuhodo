@@ -221,6 +221,12 @@ Yuhodo.Plan.MapPanel = Ext.extend(Ext.Panel, {
         var center = me.spotlist.getStore().getCenter();
         map.setCenter(1*center.get('lat'), 1*center.get('lng'), me.ZOOM_LEVEL);
 
+        // センターのマーカーを追加する
+        var centerCfg = map.getConfig(center);
+        centerCfg.icon = 'images/gmap-pin/home.png';
+        centerCfg.infowindow = false;
+        map.createMarker(center, centerCfg);
+
         var data = Yuhodo.data.MapionMasterData.children;
         // マーカー追加
         Ext.each(records, function(item) {
