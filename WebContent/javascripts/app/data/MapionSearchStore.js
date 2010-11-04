@@ -31,7 +31,22 @@ Yuhodo.data.MapionSearchStore = Ext.extend(Ext.data.JsonStore, {
                 name: 'lng',
                 mapping: 'lon'
             },{
-                // ジャンル2の名前
+                // 大ジャンルのコード
+                name: 'gnr1_code',
+                mapping: 'gnr1_code'
+
+            },{
+                // 大ジャンルの名前
+                name: 'gnr1_name',
+                mapping: 'gnr1_name'
+
+            },{
+                // 小ジャンルのコード
+                name: 'gnr2_code',
+                mapping: 'gnr2_code'
+
+            },{
+                // 小ジャンルの名前
                 name: 'gnr2_name',
                 mapping: 'gnr2_name'
             },{

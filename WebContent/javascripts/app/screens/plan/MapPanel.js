@@ -97,10 +97,17 @@ Yuhodo.Plan.MapPanel = Ext.extend(Ext.Panel, {
                 xtype: 'yuhodo-plan-spotlist',
                 region: 'south',
                 ref: 'spotlist',
-                collapsed: true,
+                collapsed: false,
                 collapseMode: 'mini',
                 split: true,
                 height: 200,
+                selModel: new Ext.grid.RowSelectionModel({
+                    singleSelect: true,
+                    listeners: {
+                        rowselect: me.onRowSelect,
+                        scope: me
+                    }
+                }),
                 listeners: {
                     collapse: me.onChangeSpotListToggle,
                     expand: me.onChangeSpotListToggle,
@@ -208,10 +215,15 @@ Yuhodo.Plan.MapPanel = Ext.extend(Ext.Panel, {
         var center = me.spotlist.getStore().getCenter();
         map.setCenter(1*center.get('lat'), 1*center.get('lng'), me.ZOOM_LEVEL);
 
+        var data = Yuhodo.data.MapionMasterData.children;
         // マーカー追加
         Ext.each(records, function(item) {
-            var cfg = map.getConfig(item.id);
-            cfg.icon = 'images/hiking.png';
+            var cfg = map.getConfig(item.id),
+                gnrData = data[item.get('gnr1_code')].children[item.get('gnr2_code')];
+
+            if (gnrData) {
+                cfg.icon = 'images/gmap-pin/' + (gnrData.icon || data[item.get('gnr1_code')].defaultIcon);
+            }
             map.createMarker(item, cfg);
         }, me);
 
@@ -220,23 +232,29 @@ Yuhodo.Plan.MapPanel = Ext.extend(Ext.Panel, {
         return true;
     },
 
+    onRowSelect: function(selMode, rowIndex, colIndex) {
+        var me = this,
+            store = me.spotlist.getStore();
+
+        this.onShowInfoWindow(store.getAt(rowIndex));
+    },
+
     /**
      * 選択したノードのInfoWindowを表示する。
      */
-    onShowInfoWindow: function(spotview, node, selections) {
+    onShowInfoWindow: function(record) {
         var me = this,
             map = me.map;
-
-        // Recordオブジェクトを取得
-        var record = me.spotpanel.spotview.getRecord(node);
 
         // google.maps.Markerオブジェクトを取得
         var marker = map.getMarkerById(record.id);
 
-        // InfoWindowを表示
-        map.openInfoWindow(marker);
+        if (marker) {
+            map.closeInfoWindow();
 
-        me.spotpanel.getTopToolbar().addroot.setDisabled(false);
+            // InfoWindowを表示
+            map.openInfoWindow(marker);
+        }
     },
 
     onClickSearchButton: function() {

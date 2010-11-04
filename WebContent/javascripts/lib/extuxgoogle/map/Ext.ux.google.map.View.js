@@ -524,6 +524,13 @@ Ext.ux.google.map.View = Ext.extend(Ext.DataView, function () {
                 return o.rec_id;
             };
 
+            this.windowMarkers = new Ext.util.MixedCollection(false);
+            this.markers.getKey = function (o) {
+                return o.rec_id;
+            };
+
+            this.zindex = 0;
+
             try {
                 // if API initialization succeeds, then render map and markers
                 this.initMapApi({
@@ -636,9 +643,12 @@ Ext.ux.google.map.View = Ext.extend(Ext.DataView, function () {
          * @return {Object} cfg 
          */
         getConfig: function (id) {
+            var me = this;
+            me.zindex += 1;
             // To be rewritten
             return {
-                content: this.tpl
+                content: me.tpl,
+                zindex: me.zindex
             };
         },
 
@@ -903,8 +913,6 @@ Ext.ux.google.map.View = Ext.extend(Ext.DataView, function () {
         openInfoWindow: function (mrk) {
             if (!_mapapiinitialized) return;
 
-            var prot = Ext.ux.google.map.View.prototype;
-            var G = prot._G;
 /*
             if (html && html instanceof Array) {
                 tabs = [];
@@ -917,7 +925,25 @@ Ext.ux.google.map.View = Ext.extend(Ext.DataView, function () {
 */
             if (mrk && mrk.infowindow) {
                 mrk.infowindow.open(this.map, mrk);
+                this.windowMarkers.add(mrk);
             }
+        },
+
+        closeInfoWindow: function(mrk) {
+            if (!_mapapiinitialized) return;
+
+            if (mrk && mrk.infowindow) {
+                mrk.infowindow.close();
+                this.windowMarkers.remove(mrk);
+                return;
+            }
+
+            var mrks = this.windowMarkers;
+            mrks.each(function(item) {
+                item.infowindow.close();
+                mrks.remove(item);
+            });
+            return;
         },
 
         setOrigin: function(origin) {
@@ -960,6 +986,10 @@ Ext.ux.google.map.View = Ext.extend(Ext.DataView, function () {
          */
         isReady: function () {
             return _mapapiinitialized;
+        },
+
+        getMarkerZindex: function() {
+            return this.zindex;
         }
     };
 }());
