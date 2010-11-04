@@ -14,6 +14,7 @@ Yuhodo.Plan.AddRouteColumn = Ext.extend(Ext.grid.ActionColumn, {
             width: 18,
             items: [{
                 iconCls: 'y-icon-add-route',
+                tooltip: 'ルートに追加します',
                 handler: function(grid, rowIndex, colIndex) {
                     var obj = grid.getStore().getAt(rowIndex);
                     grid.fireEvent('addroute', obj);
