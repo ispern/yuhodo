@@ -157,9 +157,13 @@ Yuhodo.Plan.MapPanel = Ext.extend(Ext.Panel, {
 
         if (me.center) {
             me.loadMask.show();
+
+            // 大ジャンルコードから検索対象の子ジャンルコードを取り出し
+            var gnrData = me.filterGnrCode([me.gnr_value]);
+
             me.onAroundSearch({
                 radius: '2000',
-                gnr: me.gnr_value
+                gnr: gnrData.join(',')
             });
         }
     },
@@ -281,10 +285,13 @@ Yuhodo.Plan.MapPanel = Ext.extend(Ext.Panel, {
 
         var values = form.getValue();
 
+        // 大ジャンルコードから検索対象の子ジャンルコードを取り出し
+        var gnrData = me.filterGnrCode(values.gnr);
+
         me.center = values.keyword;
         me.onAroundSearch({
             radius: values.radius,
-            gnr: values.gnr
+            gnr: gnrData.join(',')
         });       
         return true;
     },
@@ -344,6 +351,26 @@ Yuhodo.Plan.MapPanel = Ext.extend(Ext.Panel, {
      */
     onChangeSpotListToggle: function(panel) {
         this.getTopToolbar().spotlistbtn.toggle(panel.isVisible());
+    },
+
+    // private
+    filterGnrCode: function(gnr) {
+        // 大ジャンルコードから検索対象の子ジャンルコードを取り出し
+        var data = Yuhodo.data.MapionMasterData.children,
+            gnrsData = [],
+            obj;
+        for (var i=0, len=gnr.length; i<len; i++) {
+            obj = data[gnr[i]];
+            if (obj) {
+                obj = obj.children;
+                for (i in obj) {
+                    if (i) {
+                        gnrsData.push(i);
+                    }
+                }
+            }
+        }
+        return gnrsData;
     }
 });
 

@@ -145,7 +145,7 @@ Yuhodo.Plan.FormPanel = Ext.extend(Trick.form.FormPanel, {
         return {
             keyword: forms.keyword.getStore().getById(hiddenValue) || forms.keyword.getEl().dom.value,
             radius: forms.radius.getValue() * 1000,
-            gnr: gnrData.join(',')
+            gnr: gnrData
         };
     },
 
